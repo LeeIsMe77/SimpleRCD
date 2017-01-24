@@ -1,4 +1,4 @@
-﻿namespace SimpleRCD.Management {
+﻿namespace SimpleRCD.Common {
 
 	#region Directives
 	using System.Collections.ObjectModel;

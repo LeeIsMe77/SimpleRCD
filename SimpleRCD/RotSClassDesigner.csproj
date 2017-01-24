@@ -81,25 +81,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Management\CharacterClass.cs" />
-    <Compile Include="Management\CharacterClassCollection.cs" />
-    <Compile Include="Management\CharacterClassUtility.cs" />
-    <Compile Include="Management\CharacterRace.cs" />
-    <Compile Include="Management\CharacterSkill.cs" />
+    <Compile Include="Common\CharacterClass.cs" />
+    <Compile Include="Common\CharacterClassCollection.cs" />
+    <Compile Include="Common\CharacterClassUtility.cs" />
+    <Compile Include="Common\CharacterRace.cs" />
+    <Compile Include="Common\CharacterSkill.cs" />
     <Compile Include="Management\About.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Management\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="Management\RCDCache.cs" />
+    <Compile Include="Common\RCDCache.cs" />
     <Compile Include="Management\RCDForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Management\RCDForm.Designer.cs">
       <DependentUpon>RCDForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Management\SkillType.cs" />
+    <Compile Include="Common\SkillType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XElementExtension.cs" />

@@ -1,6 +1,8 @@
-﻿using System;
+﻿namespace SimpleRCD.Common {
 
-namespace SimpleRCD.Management {
+	#region Directives
+	using System;
+	#endregion
 
 	/// <summary>
 	/// Enumeration representing which side of the race war the levels should be calculated for.
