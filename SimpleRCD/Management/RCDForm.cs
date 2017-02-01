@@ -376,9 +376,8 @@
 				else if (sender == mageLevel) {
 					magePoints.Text = coefficientPointsUsed;
 					desiredClass.MageLevel = classLevel;
-				}
-
-				this.DisplayPointsRemaining(desiredClass.CalculatePointsAvailable());
+				}				
+				this.BindCharacterClass(desiredClass);
 			}
 			catch (Exception caught) {
 				MessageBox.Show(this, $"Failure validating input: {caught.Message}", @"Failure Validating Input...", MessageBoxButtons.OK, MessageBoxIcon.Error);

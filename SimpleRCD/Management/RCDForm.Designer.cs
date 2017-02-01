@@ -83,7 +83,7 @@
 			this.headerLabel.Location = new System.Drawing.Point(0, 24);
 			this.headerLabel.Name = "headerLabel";
 			this.headerLabel.Size = new System.Drawing.Size(657, 57);
-			this.headerLabel.TabIndex = 0;
+			this.headerLabel.TabIndex = 1;
 			this.headerLabel.Text = "RotS Class Designer";
 			this.headerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
@@ -96,7 +96,7 @@
 			this.modePanel.Location = new System.Drawing.Point(0, 81);
 			this.modePanel.Name = "modePanel";
 			this.modePanel.Size = new System.Drawing.Size(657, 28);
-			this.modePanel.TabIndex = 1;
+			this.modePanel.TabIndex = 2;
 			// 
 			// deleteClass
 			// 
@@ -142,7 +142,7 @@
 			this.buttonPanel.Location = new System.Drawing.Point(0, 517);
 			this.buttonPanel.Name = "buttonPanel";
 			this.buttonPanel.Size = new System.Drawing.Size(657, 37);
-			this.buttonPanel.TabIndex = 10;
+			this.buttonPanel.TabIndex = 6;
 			// 
 			// pointsRemaining
 			// 
@@ -150,7 +150,7 @@
 			this.pointsRemaining.Location = new System.Drawing.Point(177, 7);
 			this.pointsRemaining.Name = "pointsRemaining";
 			this.pointsRemaining.Size = new System.Drawing.Size(160, 23);
-			this.pointsRemaining.TabIndex = 9;
+			this.pointsRemaining.TabIndex = 1;
 			this.pointsRemaining.Text = "150";
 			this.pointsRemaining.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
@@ -160,7 +160,7 @@
 			this.pointsRemainingLabel.Location = new System.Drawing.Point(14, 7);
 			this.pointsRemainingLabel.Name = "pointsRemainingLabel";
 			this.pointsRemainingLabel.Size = new System.Drawing.Size(160, 23);
-			this.pointsRemainingLabel.TabIndex = 8;
+			this.pointsRemainingLabel.TabIndex = 0;
 			this.pointsRemainingLabel.Text = "Points Remaining:";
 			this.pointsRemainingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -170,7 +170,7 @@
 			this.clear.Location = new System.Drawing.Point(478, 3);
 			this.clear.Name = "clear";
 			this.clear.Size = new System.Drawing.Size(85, 31);
-			this.clear.TabIndex = 0;
+			this.clear.TabIndex = 2;
 			this.clear.Text = "C&lear";
 			this.clear.UseVisualStyleBackColor = true;
 			this.clear.Click += new System.EventHandler(this.clear_Click);
@@ -181,7 +181,7 @@
 			this.close.Location = new System.Drawing.Point(569, 3);
 			this.close.Name = "close";
 			this.close.Size = new System.Drawing.Size(85, 31);
-			this.close.TabIndex = 1;
+			this.close.TabIndex = 3;
 			this.close.Text = "&Close";
 			this.close.UseVisualStyleBackColor = true;
 			this.close.Click += new System.EventHandler(this.close_Click);
@@ -254,7 +254,7 @@
 			this.racePanel.Location = new System.Drawing.Point(0, 109);
 			this.racePanel.Name = "racePanel";
 			this.racePanel.Size = new System.Drawing.Size(657, 34);
-			this.racePanel.TabIndex = 2;
+			this.racePanel.TabIndex = 3;
 			// 
 			// menuStrip
 			// 
@@ -265,7 +265,7 @@
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
 			this.menuStrip.Size = new System.Drawing.Size(657, 24);
-			this.menuStrip.TabIndex = 11;
+			this.menuStrip.TabIndex = 0;
 			this.menuStrip.Text = "menuStrip1";
 			// 
 			// fileToolStripMenuItem
@@ -323,7 +323,7 @@
 			this.modifiedMage.Name = "modifiedMage";
 			this.modifiedMage.ReadOnly = true;
 			this.modifiedMage.Size = new System.Drawing.Size(174, 22);
-			this.modifiedMage.TabIndex = 27;
+			this.modifiedMage.TabIndex = 18;
 			this.modifiedMage.TabStop = false;
 			// 
 			// modifiedMystic
@@ -336,7 +336,7 @@
 			this.modifiedMystic.Name = "modifiedMystic";
 			this.modifiedMystic.ReadOnly = true;
 			this.modifiedMystic.Size = new System.Drawing.Size(174, 22);
-			this.modifiedMystic.TabIndex = 28;
+			this.modifiedMystic.TabIndex = 14;
 			this.modifiedMystic.TabStop = false;
 			// 
 			// modifiedRanger
@@ -349,7 +349,7 @@
 			this.modifiedRanger.Name = "modifiedRanger";
 			this.modifiedRanger.ReadOnly = true;
 			this.modifiedRanger.Size = new System.Drawing.Size(174, 22);
-			this.modifiedRanger.TabIndex = 29;
+			this.modifiedRanger.TabIndex = 10;
 			this.modifiedRanger.TabStop = false;
 			// 
 			// modifiedWarrior
@@ -362,7 +362,7 @@
 			this.modifiedWarrior.Name = "modifiedWarrior";
 			this.modifiedWarrior.ReadOnly = true;
 			this.modifiedWarrior.Size = new System.Drawing.Size(174, 22);
-			this.modifiedWarrior.TabIndex = 30;
+			this.modifiedWarrior.TabIndex = 6;
 			this.modifiedWarrior.TabStop = false;
 			// 
 			// modifiedLevelLabel
@@ -373,7 +373,7 @@
 			this.modifiedLevelLabel.Location = new System.Drawing.Point(429, 10);
 			this.modifiedLevelLabel.Name = "modifiedLevelLabel";
 			this.modifiedLevelLabel.Size = new System.Drawing.Size(174, 20);
-			this.modifiedLevelLabel.TabIndex = 26;
+			this.modifiedLevelLabel.TabIndex = 2;
 			this.modifiedLevelLabel.Text = "Modified Level";
 			this.modifiedLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
@@ -385,7 +385,7 @@
 			this.magePoints.Name = "magePoints";
 			this.magePoints.ReadOnly = true;
 			this.magePoints.Size = new System.Drawing.Size(101, 22);
-			this.magePoints.TabIndex = 20;
+			this.magePoints.TabIndex = 17;
 			this.magePoints.TabStop = false;
 			// 
 			// mageLevel
@@ -395,7 +395,7 @@
 			this.mageLevel.MaxLength = 3;
 			this.mageLevel.Name = "mageLevel";
 			this.mageLevel.Size = new System.Drawing.Size(101, 22);
-			this.mageLevel.TabIndex = 22;
+			this.mageLevel.TabIndex = 16;
 			this.mageLevel.Validating += new System.ComponentModel.CancelEventHandler(this.classLevel_Validating);
 			// 
 			// mysticPoints
@@ -406,7 +406,7 @@
 			this.mysticPoints.Name = "mysticPoints";
 			this.mysticPoints.ReadOnly = true;
 			this.mysticPoints.Size = new System.Drawing.Size(101, 22);
-			this.mysticPoints.TabIndex = 21;
+			this.mysticPoints.TabIndex = 13;
 			this.mysticPoints.TabStop = false;
 			// 
 			// mageLabel
@@ -415,7 +415,7 @@
 			this.mageLabel.Location = new System.Drawing.Point(48, 120);
 			this.mageLabel.Name = "mageLabel";
 			this.mageLabel.Size = new System.Drawing.Size(134, 20);
-			this.mageLabel.TabIndex = 16;
+			this.mageLabel.TabIndex = 15;
 			this.mageLabel.Text = "Mage:";
 			this.mageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -427,7 +427,7 @@
 			this.rangerPoints.Name = "rangerPoints";
 			this.rangerPoints.ReadOnly = true;
 			this.rangerPoints.Size = new System.Drawing.Size(101, 22);
-			this.rangerPoints.TabIndex = 19;
+			this.rangerPoints.TabIndex = 9;
 			this.rangerPoints.TabStop = false;
 			// 
 			// mysticLevel
@@ -437,7 +437,7 @@
 			this.mysticLevel.MaxLength = 3;
 			this.mysticLevel.Name = "mysticLevel";
 			this.mysticLevel.Size = new System.Drawing.Size(101, 22);
-			this.mysticLevel.TabIndex = 23;
+			this.mysticLevel.TabIndex = 12;
 			this.mysticLevel.Validating += new System.ComponentModel.CancelEventHandler(this.classLevel_Validating);
 			// 
 			// mysticLabel
@@ -446,7 +446,7 @@
 			this.mysticLabel.Location = new System.Drawing.Point(48, 92);
 			this.mysticLabel.Name = "mysticLabel";
 			this.mysticLabel.Size = new System.Drawing.Size(134, 20);
-			this.mysticLabel.TabIndex = 14;
+			this.mysticLabel.TabIndex = 11;
 			this.mysticLabel.Text = "Mystic";
 			this.mysticLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -457,7 +457,7 @@
 			this.warriorLevel.MaxLength = 3;
 			this.warriorLevel.Name = "warriorLevel";
 			this.warriorLevel.Size = new System.Drawing.Size(101, 22);
-			this.warriorLevel.TabIndex = 24;
+			this.warriorLevel.TabIndex = 4;
 			this.warriorLevel.Validating += new System.ComponentModel.CancelEventHandler(this.classLevel_Validating);
 			// 
 			// rangerLevel
@@ -467,7 +467,7 @@
 			this.rangerLevel.MaxLength = 3;
 			this.rangerLevel.Name = "rangerLevel";
 			this.rangerLevel.Size = new System.Drawing.Size(101, 22);
-			this.rangerLevel.TabIndex = 25;
+			this.rangerLevel.TabIndex = 8;
 			this.rangerLevel.Validating += new System.ComponentModel.CancelEventHandler(this.classLevel_Validating);
 			// 
 			// rangerLabel
@@ -476,7 +476,7 @@
 			this.rangerLabel.Location = new System.Drawing.Point(48, 65);
 			this.rangerLabel.Name = "rangerLabel";
 			this.rangerLabel.Size = new System.Drawing.Size(134, 20);
-			this.rangerLabel.TabIndex = 13;
+			this.rangerLabel.TabIndex = 7;
 			this.rangerLabel.Text = "Ranger:";
 			this.rangerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -486,7 +486,7 @@
 			this.levelLabel.Location = new System.Drawing.Point(188, 10);
 			this.levelLabel.Name = "levelLabel";
 			this.levelLabel.Size = new System.Drawing.Size(101, 20);
-			this.levelLabel.TabIndex = 18;
+			this.levelLabel.TabIndex = 0;
 			this.levelLabel.Text = "Level";
 			this.levelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
@@ -498,7 +498,7 @@
 			this.warriorPoints.Name = "warriorPoints";
 			this.warriorPoints.ReadOnly = true;
 			this.warriorPoints.Size = new System.Drawing.Size(101, 22);
-			this.warriorPoints.TabIndex = 17;
+			this.warriorPoints.TabIndex = 5;
 			this.warriorPoints.TabStop = false;
 			// 
 			// warriorLabel
@@ -507,7 +507,7 @@
 			this.warriorLabel.Location = new System.Drawing.Point(48, 37);
 			this.warriorLabel.Name = "warriorLabel";
 			this.warriorLabel.Size = new System.Drawing.Size(134, 20);
-			this.warriorLabel.TabIndex = 15;
+			this.warriorLabel.TabIndex = 3;
 			this.warriorLabel.Text = "Warrior:";
 			this.warriorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -517,7 +517,7 @@
 			this.pointsLabel.Location = new System.Drawing.Point(310, 10);
 			this.pointsLabel.Name = "pointsLabel";
 			this.pointsLabel.Size = new System.Drawing.Size(101, 20);
-			this.pointsLabel.TabIndex = 12;
+			this.pointsLabel.TabIndex = 1;
 			this.pointsLabel.Text = "Points";
 			this.pointsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
@@ -546,7 +546,7 @@
 			this.coefPanel.Location = new System.Drawing.Point(0, 143);
 			this.coefPanel.Name = "coefPanel";
 			this.coefPanel.Size = new System.Drawing.Size(657, 152);
-			this.coefPanel.TabIndex = 31;
+			this.coefPanel.TabIndex = 4;
 			// 
 			// skillsGridView
 			// 
@@ -560,7 +560,7 @@
 			this.skillsGridView.Name = "skillsGridView";
 			this.skillsGridView.ReadOnly = true;
 			this.skillsGridView.Size = new System.Drawing.Size(657, 222);
-			this.skillsGridView.TabIndex = 32;
+			this.skillsGridView.TabIndex = 5;
 			// 
 			// RCDForm
 			// 
