@@ -106,7 +106,7 @@
 			this.add.Location = new System.Drawing.Point(519, 3);
 			this.add.Name = "add";
 			this.add.Size = new System.Drawing.Size(60, 21);
-			this.add.TabIndex = 3;
+			this.add.TabIndex = 2;
 			this.add.Text = "&Add";
 			this.add.UseVisualStyleBackColor = true;
 			this.add.Click += new System.EventHandler(this.add_Click);
@@ -117,7 +117,7 @@
 			this.delete.Location = new System.Drawing.Point(585, 3);
 			this.delete.Name = "delete";
 			this.delete.Size = new System.Drawing.Size(60, 21);
-			this.delete.TabIndex = 2;
+			this.delete.TabIndex = 3;
 			this.delete.Text = "&Delete";
 			this.delete.UseVisualStyleBackColor = true;
 			this.delete.Click += new System.EventHandler(this.delete_Click);
@@ -503,7 +503,7 @@
 			this.rangerPoints.MaxLength = 3;
 			this.rangerPoints.Name = "rangerPoints";
 			this.rangerPoints.Size = new System.Drawing.Size(153, 22);
-			this.rangerPoints.TabIndex = 20;
+			this.rangerPoints.TabIndex = 9;
 			this.rangerPoints.Validating += new System.ComponentModel.CancelEventHandler(this.classPoints_Validating);
 			// 
 			// magePoints
@@ -514,7 +514,7 @@
 			this.magePoints.MaxLength = 3;
 			this.magePoints.Name = "magePoints";
 			this.magePoints.Size = new System.Drawing.Size(153, 22);
-			this.magePoints.TabIndex = 22;
+			this.magePoints.TabIndex = 17;
 			this.magePoints.Validating += new System.ComponentModel.CancelEventHandler(this.classPoints_Validating);
 			// 
 			// warriorPoints
@@ -525,7 +525,7 @@
 			this.warriorPoints.MaxLength = 3;
 			this.warriorPoints.Name = "warriorPoints";
 			this.warriorPoints.Size = new System.Drawing.Size(153, 22);
-			this.warriorPoints.TabIndex = 19;
+			this.warriorPoints.TabIndex = 5;
 			this.warriorPoints.Validating += new System.ComponentModel.CancelEventHandler(this.classPoints_Validating);
 			// 
 			// mysticPoints
@@ -536,7 +536,7 @@
 			this.mysticPoints.MaxLength = 3;
 			this.mysticPoints.Name = "mysticPoints";
 			this.mysticPoints.Size = new System.Drawing.Size(153, 22);
-			this.mysticPoints.TabIndex = 21;
+			this.mysticPoints.TabIndex = 13;
 			this.mysticPoints.Validating += new System.ComponentModel.CancelEventHandler(this.classPoints_Validating);
 			// 
 			// skillsGridView
@@ -591,7 +591,7 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(657, 132);
-			this.tableLayoutPanel1.TabIndex = 7;
+			this.tableLayoutPanel1.TabIndex = 4;
 			// 
 			// RCDForm
 			// 
