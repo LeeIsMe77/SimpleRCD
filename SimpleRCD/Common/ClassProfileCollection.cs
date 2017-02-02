@@ -4,8 +4,8 @@
 	using System.Collections.ObjectModel;
 	#endregion
 
-	public class CharacterClassCollection
-		: Collection<CharacterClass> {
+	public class ClassProfileCollection
+		: Collection<ClassProfile> {
 
 		#region Collection Management
 
@@ -14,8 +14,8 @@
 		/// </summary>
 		/// <param name="className">Name of the class.</param>
 		/// <returns>CharacterClass.</returns>
-		public CharacterClass Add(string className) {
-			var characterClass = new CharacterClass(className);
+		public ClassProfile Add(string className) {
+			var characterClass = new ClassProfile(className);
 			this.Add(characterClass);
 			return characterClass;
 		}
@@ -30,8 +30,8 @@
 		/// <param name="magePoints">The mage points.</param>
 		/// <param name="isSystemClass">if set to <c>true</c> [is system class].</param>
 		/// <returns>CharacterClass.</returns>
-		public CharacterClass Add(string className, int warriorPoints, int rangerPoints, int mysticPoints, int magePoints, bool isSystemClass) {
-			var characterClass = new CharacterClass(className, warriorPoints, rangerPoints, mysticPoints, magePoints, isSystemClass);
+		public ClassProfile Add(string className, int warriorPoints, int rangerPoints, int mysticPoints, int magePoints) {
+			var characterClass = new ClassProfile(className, warriorPoints, rangerPoints, mysticPoints, magePoints);
 			this.Add(characterClass);
 			return characterClass;
 		}

@@ -1,4 +1,4 @@
-﻿namespace SimpleRCD {
+﻿namespace SimpleRCD.Extensions {
 
 	#region Directives
 	using System;

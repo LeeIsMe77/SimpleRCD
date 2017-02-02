@@ -8,7 +8,7 @@
 	/// Enumeration representing which side of the race war the levels should be calculated for.
 	/// </summary>
 	[Flags]
-	public enum CharacterRace {
+	public enum RaceType {
 		Whitie,
 		UrukHai,
 		Orc,

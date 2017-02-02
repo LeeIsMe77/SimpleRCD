@@ -1,6 +1,6 @@
 ﻿namespace SimpleRCD.Common {
 
-	public enum SkillType {
+	public enum ClassType {
 		Warrior,
 		Ranger,
 		Mystic,

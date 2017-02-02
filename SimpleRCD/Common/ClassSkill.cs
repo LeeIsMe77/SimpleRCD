@@ -7,7 +7,7 @@
 	using System.Text;
 	#endregion
 
-	public class CharacterSkill {
+	public class ClassSkill {
 
 		#region Properties
 
@@ -18,10 +18,10 @@
 		public string SkillName { get; }
 
 		/// <summary>
-		/// Gets the type of the skill.
+		/// Gets the Class
 		/// </summary>
-		/// <value>The type of the skill.</value>
-		public SkillType SkillType { get; }
+		/// <value>The class.</value>
+		public ClassType Class { get; }
 
 		/// <summary>
 		/// Gets the skill level.
@@ -33,21 +33,22 @@
 		/// Gets the race.
 		/// </summary>
 		/// <value>The race.</value>
-		public CharacterRace Race { get; }
+		public RaceType Race { get; }
 
 		#endregion
 
 		#region Constructor
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="CharacterSkill"/> class.
+		/// Initializes a new instance of the <see cref="ClassSkill" /> class.
 		/// </summary>
 		/// <param name="skillName">Name of the skill.</param>
-		/// <param name="skillType">Type of the skill.</param>
+		/// <param name="classType">Class of the skill.</param>
 		/// <param name="skillLevel">The skill level.</param>
-		public CharacterSkill(string skillName, SkillType skillType, int skillLevel, CharacterRace race) {
+		/// <param name="race">The race.</param>
+		public ClassSkill(string skillName, ClassType classType, int skillLevel, RaceType race) {
 			this.SkillName = skillName;
-			this.SkillType = skillType;
+			this.Class = classType;
 			this.SkillLevel = skillLevel;
 			this.Race = race;
 		}

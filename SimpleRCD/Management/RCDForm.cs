@@ -10,6 +10,7 @@
 	using System.Windows.Forms;
 	using System.Xml.Linq;
 	using Common;
+	using Extensions;
 	#endregion
 
 	public partial class RCDForm
@@ -17,7 +18,7 @@
 
 		#region Constants
 
-		private const string CONFIGURATION_FILE_NAME = "RCDClasses.xml";
+		private const string CONFIGURATION_FILE_NAME = "SimpleRCD.xml";
 
 		#endregion
 
@@ -25,31 +26,31 @@
 
 		#region CharacterClassCollection
 
-		private CharacterClassCollection _characterClasses;
+		private ClassProfileCollection _classProfiles;
 
 		/// <summary>
-		/// Gets the character classes.
+		/// Gets the class profiles.
 		/// </summary>
-		/// <value>The character classes.</value>
-		public CharacterClassCollection CharacterClasses {
+		/// <value>The class profiles.</value>
+		public ClassProfileCollection ClassProfiles {
 			get {
-				if (_characterClasses == null) {
-					_characterClasses = new CharacterClassCollection();
+				if (_classProfiles == null) {
+					_classProfiles = new ClassProfileCollection();
 				}
-				return _characterClasses;
+				return _classProfiles;
 			}
-			private set { _characterClasses = value; }
+			private set { _classProfiles = value; }
 		}
 
 		#endregion
 
 		#region CharacterRace
-		
+
 		/// <summary>
 		/// Gets or sets the character race.
 		/// </summary>
 		/// <value>The character race.</value>
-		public CharacterRace CharacterRace { get; set; }
+		public RaceType CharacterRace { get; set; }
 
 		#endregion
 
@@ -66,37 +67,19 @@
 		}
 
 		#endregion
-
-		#region OverrideSystemClassesCheckBox
-
-		private CheckBox _overrideSystemButton;
-
-		/// <summary>
-		/// Gets the override system classes CheckBox.
-		/// </summary>
-		/// <value>The override system classes CheckBox.</value>
-		private CheckBox OverrideSystemButton {
-			get {
-				if (_overrideSystemButton == null) {
-					_overrideSystemButton = new CheckBox();
-					_overrideSystemButton.Text = @"Override";
-					_overrideSystemButton.CheckedChanged += this.overrideSystem_CheckedChanged;
-					_overrideSystemButton.Dock = DockStyle.Fill;
-				}
-				return _overrideSystemButton;
-			}
-		}
-
-		#endregion
-
+		
 		#endregion
 
 		#region Constructor
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RCDForm"/> class.
+		/// </summary>
 		public RCDForm() {
 			InitializeComponent();
-			this.CharacterRace = CharacterRace.Whitie;
+			this.CharacterRace = RaceType.Whitie;
 			this.whitieRadio.Checked = true;
+			this.DisplayPointsRemaining(150);
 		}
 
 		#endregion
@@ -109,97 +92,95 @@
 		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
 		protected override void OnLoad(EventArgs e) {
 			base.OnLoad(e);
-			try {
-				this.toolsToolStripMenuItem.DropDownItems.Add(new ToolStripControlHost(this.OverrideSystemButton));
-				this.toolsToolStripMenuItem.AutoSize = true;
-			}
-			catch { }
 			this.LoadConfiguration();
-			this.BindCharacterClasses();
-
+			this.BindClassProfiles();
 		}
 
 		#endregion
 
 		#region Methods
 
-		#region CharacterClass Management
+		#region Character Profile Management
 
 		/// <summary>
-		/// Binds the character classes.
+		/// Binds the class profiles.
 		/// </summary>
-		private void BindCharacterClasses() {
-			var selectedText = this.selectedClass.Text;
+		private void BindClassProfiles() {
+
 			try {
-				this.selectedClass.DataSource = null;
-				var bindingSource = new BindingSource(this.CharacterClasses, null);
-				this.selectedClass.DataSource = bindingSource;
-				this.selectedClass.DisplayMember = @"CharacterClassName";
+				this.selectedProfile.DataSource = null;
+				var bindingSource = new BindingSource(this.ClassProfiles, null);
+				this.selectedProfile.DataSource = bindingSource;
+				this.selectedProfile.DisplayMember = @"ClassProfileName";
 			}
 			catch (Exception caught) {
-				MessageBox.Show(this, $"Failure binding classes: {caught.Message}", @"Failre Binding Classes...", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			finally {
-				this.selectedClass.Text = string.IsNullOrWhiteSpace(selectedText)
-					? this.CharacterClasses.Select(characterClass => characterClass.CharacterClassName).FirstOrDefault() ?? string.Empty
-					: selectedText
-					;
+				MessageBox.Show(this, $"Failure binding class profiles: {caught.Message}", @"Failre Binding Class Profiles...", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
 		/// <summary>
-		/// Binds the character class to the user interface.
+		/// Binds the class profile.
 		/// </summary>
-		/// <param name="characterClass">The character class.</param>
-		private void BindCharacterClass(CharacterClass characterClass) {
-			if (characterClass == null) return;
+		/// <param name="classProfile">The class profile.</param>
+		private void BindClassProfile(ClassProfile classProfile) {
 
+			if (classProfile == null) {
+				classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
+			}
+			#region Set readonly and enabled properties in applicable controls
 			this.warriorLevel.ReadOnly
+				= this.warriorPoints.ReadOnly
 				= this.rangerLevel.ReadOnly
+				= this.rangerPoints.ReadOnly
 				= this.mageLevel.ReadOnly
+				= this.magePoints.ReadOnly
 				= this.mysticLevel.ReadOnly
-				= characterClass.IsSystemClass;
+				= this.mysticPoints.ReadOnly
+				= (this.selectedProfile.SelectedItem as ClassProfile) == null;
 
-			this.deleteClass.Enabled
-				= this.clear.Enabled
-				= (this.OverrideSystemButton.Checked || !characterClass.IsSystemClass);
+			this.clear.Enabled
+				= this.delete.Enabled
+				= (this.selectedProfile.SelectedItem as ClassProfile) != null;
+			#endregion
 
-			var pointsAvailable = 150;
-			var genericModifier = this.CharacterRace == CharacterRace.Orc ? .6m : 1.0m;
+			var defaultModifier = this.CharacterRace == RaceType.Orc ? .6m : 1.0m;
 
-			this.warriorLevel.Text = characterClass.WarriorLevel.ToString();
-			var warriorPoints = CharacterClassUtility.CalculatePointsUsed(characterClass.WarriorLevel);
-			this.warriorPoints.Text = warriorPoints.ToString();
-			var warriorModifier = this.CharacterRace == CharacterRace.Orc ? .6m : 1.0m;
-			var modifiedWarriorLevel = ((int)Math.Floor(characterClass.WarriorLevel * genericModifier));
+			#region Warrior Row
+			var warriorLevel = ClassProfileUtility.CalculateClassLevel(classProfile.WarriorPoints);
+			this.warriorLevel.Text = warriorLevel.ToString();
+			this.warriorPoints.Text = classProfile.WarriorPoints.ToString();
+			var modifiedWarriorLevel = ((int)Math.Floor(warriorLevel * defaultModifier));
 			this.modifiedWarrior.Text = modifiedWarriorLevel.ToString();
-			pointsAvailable -= warriorPoints;
+			#endregion
 
-			this.rangerLevel.Text = characterClass.RangerLevel.ToString();
-			var rangerPoints = CharacterClassUtility.CalculatePointsUsed(characterClass.RangerLevel);
-			this.rangerPoints.Text = rangerPoints.ToString();
-			var modifiedRangerLevel = ((int)Math.Floor(characterClass.RangerLevel * genericModifier));
+			#region Ranger Row
+			var rangerLevel = ClassProfileUtility.CalculateClassLevel(classProfile.RangerPoints);
+			this.rangerLevel.Text = rangerLevel.ToString();
+			this.rangerPoints.Text = classProfile.RangerPoints.ToString();
+			var modifiedRangerLevel = ((int)Math.Floor(rangerLevel * defaultModifier));
 			this.modifiedRanger.Text = modifiedRangerLevel.ToString();
-			pointsAvailable -= rangerPoints;
+			#endregion
 
-			this.mysticLevel.Text = characterClass.MysticLevel.ToString();
-			var mysticPoints = CharacterClassUtility.CalculatePointsUsed(characterClass.MysticLevel);
-			this.mysticPoints.Text = mysticPoints.ToString();
-			var modifiedMysticLevel = ((int)Math.Floor(characterClass.MysticLevel * genericModifier));
+			#region Mystic Row
+			var mysticLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MysticPoints);
+			this.mysticLevel.Text = mysticLevel.ToString();
+			this.mysticPoints.Text = classProfile.MysticPoints.ToString();
+			var modifiedMysticLevel = ((int)Math.Floor(mysticLevel * defaultModifier));
 			this.modifiedMystic.Text = modifiedMysticLevel.ToString();
-			pointsAvailable -= mysticPoints;
+			#endregion
 
-			this.mageLevel.Text = characterClass.MageLevel.ToString();
-			var magePoints = CharacterClassUtility.CalculatePointsUsed(characterClass.MageLevel);
-			this.magePoints.Text = magePoints.ToString();
-			var modifiedMageLevel = (int)Math.Floor(this.CharacterRace == CharacterRace.UrukHai ? characterClass.MageLevel - 3 : characterClass.MageLevel * genericModifier);
+			#region Mage Row
+			var mageLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MagePoints);
+			this.mageLevel.Text = mageLevel.ToString();
+			this.magePoints.Text = classProfile.MagePoints.ToString();
+			var modifiedMageLevel = (int)Math.Floor(this.CharacterRace == RaceType.UrukHai ? mageLevel - 3 : mageLevel * defaultModifier);
 			this.modifiedMage.Text = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel).ToString();
-			pointsAvailable -= magePoints;
+			#endregion
 
 			//var applicableSkills = RCDCache.MageSkills.Where(item => (this.CharacterRace & item.Race) == this.CharacterRace && item.SkillLevel <= modifiedMageLevel);
 			//this.skillsGridView.DataSource = applicableSkills.ToList();
 
-			this.DisplayPointsRemaining(pointsAvailable);
+			this.DisplayPointsRemaining(classProfile.CalculatePointsAvailable());
 		}
 
 		/// <summary>
@@ -215,16 +196,6 @@
 			this.pointsRemaining.Text = pointsRemaining.ToString();
 		}
 
-		/// <summary>
-		/// Retrieves the selected class.
-		/// </summary>
-		/// <returns>CharacterClass.</returns>
-		private CharacterClass RetrieveSelectedClass() {
-			var selectedText = this.selectedClass.Text;
-			if (string.IsNullOrWhiteSpace(selectedText)) return null;
-			return this.CharacterClasses.FirstOrDefault(characterClass => characterClass.CharacterClassName.Equals(selectedText, StringComparison.OrdinalIgnoreCase));
-		}
-
 		#endregion
 
 		#region Configuration
@@ -233,37 +204,35 @@
 		/// Loads the configuration.
 		/// </summary>
 		private void LoadConfiguration() {
-			var classCollection = new CharacterClassCollection();
+			var classCollection = new ClassProfileCollection();
 
 			if (File.Exists(this.ConfigurationFilePath)) {
 
 				try {
 					var configurationFile = XElement.Load(this.ConfigurationFilePath);
+					
+					this.CharacterRace = configurationFile.SafeAttributeValue<RaceType>(@"CharacterRace");
+					(this.CharacterRace == RaceType.Whitie ? this.whitieRadio : this.CharacterRace == RaceType.UrukHai ? this.urukHaiRadio : this.orcRadio).Checked = true;
 
-					this.OverrideSystemButton.Checked = configurationFile.SafeAttributeValue<bool>(@"OverrideSystemClasses");
-					this.CharacterRace = configurationFile.SafeAttributeValue<CharacterRace>(@"CharacterRace");
-					(this.CharacterRace == CharacterRace.Whitie ? this.whitieRadio : this.CharacterRace == CharacterRace.UrukHai ? this.urukHaiRadio : this.orcRadio).Checked = true;
-
-					var classElements = configurationFile?.Elements(@"Class");
+					var classElements = configurationFile?.Elements(@"ClassProfile");
 					if (classElements != null) {
 						foreach (var classElement in classElements) {
 
-							var className = classElement.SafeAttributeValue<string>(@"ClassName");
+							var className = classElement.SafeAttributeValue<string>(@"ClassProfileName");
 							if (string.IsNullOrWhiteSpace(className)) {
-								throw new Exception(@"The class name cannot be blank.");
+								throw new Exception(@"The class profile name cannot be blank.");
 							}
 
-							if (classCollection.Any(characterClass => characterClass.CharacterClassName.Equals(className, StringComparison.OrdinalIgnoreCase))) {
-								throw new Exception($"The class name {className} is a duplicate class.");
+							if (classCollection.Any(characterClass => characterClass.ClassProfileName.Equals(className, StringComparison.OrdinalIgnoreCase))) {
+								throw new Exception($"The class profile name {className} is a duplicate class.");
 							}
 
 							classCollection.Add(
 								className,
-								classElement.SafeAttributeValue<int>(@"WarriorLevel"),
-								classElement.SafeAttributeValue<int>(@"RangerLevel"),
-								classElement.SafeAttributeValue<int>(@"MysticLevel"),
-								classElement.SafeAttributeValue<int>(@"MageLevel"),
-								classElement.SafeAttributeValue<bool>(@"IsSystemClass")
+								classElement.SafeAttributeValue<int>(@"WarriorPoints"),
+								classElement.SafeAttributeValue<int>(@"RangerPoints"),
+								classElement.SafeAttributeValue<int>(@"MysticPoints"),
+								classElement.SafeAttributeValue<int>(@"MagePoints")
 							);
 						}
 					}
@@ -273,42 +242,41 @@
 				}
 			}
 			else {
-				classCollection.Add(@"Warrior", 30, 15, 12, 9, true);
-				classCollection.Add(@"Ranger", 15, 30, 9, 12, true);
-				classCollection.Add(@"Mystic", 12, 9, 30, 15, true);
-				classCollection.Add(@"Mage", 9, 12, 15, 30, true);
-				classCollection.Add(@"Baiken", 23, 27, 3, 9, true);
-				classCollection.Add(@"Barbarian", 33, 15, 6, 0, true);
-				classCollection.Add(@"Healer", 6, 0, 33, 15, true);
-				classCollection.Add(@"Wizard", 6, 9, 12, 33, true);
-				classCollection.Add(@"Buffer", 30, 20, 6, 3, true);
+				//TODO: Add default classes based on points instead of levels.
+				//classCollection.Add(@"Warrior", 30, 15, 12, 9, true);
+				//classCollection.Add(@"Ranger", 15, 30, 9, 12, true);
+				//classCollection.Add(@"Mystic", 12, 9, 30, 15, true);
+				//classCollection.Add(@"Mage", 9, 12, 15, 30, true);
+				//classCollection.Add(@"Baiken", 23, 27, 3, 9, true);
+				//classCollection.Add(@"Barbarian", 33, 15, 6, 0, true);
+				//classCollection.Add(@"Healer", 6, 0, 33, 15, true);
+				//classCollection.Add(@"Wizard", 6, 9, 12, 33, true);
+				//classCollection.Add(@"Buffer", 30, 20, 6, 3, true);
 			}
-			this.CharacterClasses = classCollection;
+			this.ClassProfiles = classCollection;
 		}
 
 		/// <summary>
 		/// Saves the configuration.
 		/// </summary>
 		private void SaveConfiguration() {
-			if (this.CharacterClasses == null) return;
+			if (this.ClassProfiles == null) return;
 			if (!Directory.Exists(_configurationFileDirectory)) {
 				Directory.CreateDirectory(_configurationFileDirectory);
 			}
 			try {
 				var exportElement = new XElement(
-					@"RCDCharacterClasses",
-					new XAttribute(@"OverrideSystemClasses", this.OverrideSystemButton.Checked),
+					@"ClassProfiles",
 					new XAttribute(@"CharacterRace", this.CharacterRace)
 					);
-				foreach (var characterClass in this.CharacterClasses) {
+				foreach (var characterClass in this.ClassProfiles) {
 					exportElement.Add(
-						new XElement(@"Class",
-							new XAttribute(@"ClassName", characterClass.CharacterClassName),
-							new XAttribute(@"MageLevel", characterClass.MageLevel),
-							new XAttribute(@"MysticLevel", characterClass.MysticLevel),
-							new XAttribute(@"RangerLevel", characterClass.RangerLevel),
-							new XAttribute(@"WarriorLevel", characterClass.WarriorLevel),
-							new XAttribute(@"IsSystemClass", characterClass.IsSystemClass)
+						new XElement(@"ClassProfile",
+							new XAttribute(@"ClassProfileName", characterClass.ClassProfileName),
+							new XAttribute(@"MagePoints", characterClass.MagePoints),
+							new XAttribute(@"MysticPoints", characterClass.MysticPoints),
+							new XAttribute(@"RangerPoints", characterClass.RangerPoints),
+							new XAttribute(@"WarriorPoints", characterClass.WarriorPoints)
 							)
 						);
 				}
@@ -326,11 +294,40 @@
 		#region Control Events
 
 		/// <summary>
-		/// Handles the Click event of the aboutToolStripMenuItem1 control.
+		/// Handles the Click event of the add control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-		private void aboutToolStripMenuItem1_Click(object sender, EventArgs e) {
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		/// <exception cref="Exception">A profile by the name {newName}</exception>
+		private void add_Click(object sender, EventArgs e) {
+			try {
+				var newName = InputBox.ShowDialog(this, @"Select New Profile Name...", @"Class Profile Name", string.Empty);
+				if (string.IsNullOrWhiteSpace(newName)) return;
+
+				//Try using the new name as an XAttribute value.  
+				new XAttribute("Sample", newName);
+
+				var dataSourceAsProfileCollection = (this.selectedProfile.DataSource as BindingSource)?.DataSource as ClassProfileCollection;
+				if (dataSourceAsProfileCollection != null) {
+					if (this.ClassProfiles.Any(profile => profile.ClassProfileName.Equals(newName, StringComparison.OrdinalIgnoreCase))) {
+						throw new Exception($"A profile by the name {newName} already exists.");
+					}
+					var newClass = dataSourceAsProfileCollection.Add(newName);
+					this.BindClassProfiles();
+					this.selectedProfile.SelectedItem = newClass;
+				}
+			}
+			catch (Exception caught) {
+				MessageBox.Show(this, $"Failure creating new class profile: {caught.Message}", @"Failure Creating Class Profile...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		/// <summary>
+		/// Handles the Click event of the aboutToolStripMenuItem control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
 			using (var form = new About()) {
 				form.ShowDialog(this);
 			}
@@ -340,11 +337,11 @@
 		/// Handles the Validating event of the classLevel control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="System.ComponentModel.CancelEventArgs"/> instance containing the event data.</param>
+		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
 		/// <exception cref="Exception">The value {senderAsTextBox.Text}</exception>
 		private void classLevel_Validating(object sender, CancelEventArgs e) {
-			var desiredClass = this.RetrieveSelectedClass();
-			if (desiredClass == null) return;
+			var desiredProfile = this.selectedProfile.SelectedItem as ClassProfile;
+			if (desiredProfile == null) return;
 
 			var senderAsTextBox = sender as TextBox;
 			if (senderAsTextBox == null) return;
@@ -354,30 +351,25 @@
 			}
 
 			try {
-
 				var classLevel = 0;
 				if (!int.TryParse(senderAsTextBox.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out classLevel)) {
 					throw new Exception($"The value {senderAsTextBox.Text} is not a valid character level.");
 				}
+				var pointsUsed = ClassProfileUtility.CalculateClassPoints(classLevel);
 
-				var coefficientPointsUsed = CharacterClassUtility.CalculatePointsUsed(classLevel).ToString(); ;
 				if (sender == warriorLevel) {
-					warriorPoints.Text = coefficientPointsUsed;
-					desiredClass.WarriorLevel = classLevel;
+					desiredProfile.WarriorPoints = pointsUsed;
 				}
 				else if (sender == rangerLevel) {
-					rangerPoints.Text = coefficientPointsUsed;
-					desiredClass.RangerLevel = classLevel;
+					desiredProfile.RangerPoints = pointsUsed;
 				}
 				else if (sender == mysticLevel) {
-					mysticPoints.Text = coefficientPointsUsed;
-					desiredClass.MysticLevel = classLevel;
+					desiredProfile.MysticPoints = pointsUsed;
 				}
 				else if (sender == mageLevel) {
-					magePoints.Text = coefficientPointsUsed;
-					desiredClass.MageLevel = classLevel;
-				}				
-				this.BindCharacterClass(desiredClass);
+					desiredProfile.MagePoints = pointsUsed;
+				}
+				this.BindClassProfile(desiredProfile);
 			}
 			catch (Exception caught) {
 				MessageBox.Show(this, $"Failure validating input: {caught.Message}", @"Failure Validating Input...", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -387,75 +379,98 @@
 		}
 
 		/// <summary>
+		/// Handles the Validating event of the classPoints control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
+		/// <exception cref="Exception">The value {senderAsTextBox.Text}</exception>
+		private void classPoints_Validating(object sender, CancelEventArgs e) {
+			var desiredProfile = this.selectedProfile.SelectedItem as ClassProfile;
+			if (desiredProfile == null) return;
+
+			var senderAsTextBox = sender as TextBox;
+			if (senderAsTextBox == null) return;
+
+			if (string.IsNullOrWhiteSpace(senderAsTextBox.Text)) {
+				senderAsTextBox.Text = "0";
+			}
+
+			try {
+				var classPoints = 0;
+				if (!int.TryParse(senderAsTextBox.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out classPoints)) {
+					throw new Exception($"The value {senderAsTextBox.Text} is not a valid character points.");
+				}
+
+				if (senderAsTextBox == this.warriorPoints) {
+					desiredProfile.WarriorPoints = classPoints;
+				}
+				else if (senderAsTextBox == this.rangerPoints) {
+					desiredProfile.RangerPoints = classPoints;
+				}
+				else if (senderAsTextBox == this.mysticPoints) {
+					desiredProfile.MysticPoints = classPoints;
+				}
+				else if (senderAsTextBox == this.magePoints) {
+					desiredProfile.MagePoints = classPoints;
+				}
+				this.BindClassProfile(desiredProfile);
+			}
+			catch (Exception caught) {
+				MessageBox.Show(this, $"Failure validating input: {caught.Message}", @"Failure Validating Input...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				e.Cancel = true;
+			}
+		}
+
+		/// <summary>
 		/// Handles the Click event of the clear control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void clear_Click(object sender, EventArgs e) {
-			var desiredClass = this.RetrieveSelectedClass();
-			if (desiredClass == null) return;
+			var desiredProfile = this.selectedProfile.SelectedItem as ClassProfile;
+			if (desiredProfile == null) return;
 
-			desiredClass.WarriorLevel = desiredClass.RangerLevel = desiredClass.MysticLevel = desiredClass.MageLevel = 0;
-			this.BindCharacterClass(desiredClass);
+			desiredProfile.WarriorPoints = desiredProfile.RangerPoints = desiredProfile.MysticPoints = desiredProfile.MagePoints = 0;
+			this.BindClassProfile(desiredProfile);
 		}
 
 		/// <summary>
 		/// Handles the Click event of the close control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void close_Click(object sender, EventArgs e) {
 			this.Close();
 		}
 
 		/// <summary>
-		/// Handles the MouseUp event of the control control.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
-		private void control_MouseUp(object sender, MouseEventArgs e) {
-			if (e.Button == MouseButtons.Left) {
-				(sender as TextBoxBase)?.SelectAll();
-			}
-		}
-
-		/// <summary>
-		/// Handles the Click event of the deleteClass control.
+		/// Handles the Click event of the delete control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void deleteClass_Click(object sender, EventArgs e) {
-			var desiredClass = this.RetrieveSelectedClass();
-			if (desiredClass == null) return;
+		private void delete_Click(object sender, EventArgs e) {
+			var desiredProfile = this.selectedProfile.SelectedItem as ClassProfile;
+			if (desiredProfile == null) return;
 
-			if (this.CharacterClasses.Contains(desiredClass)) {
+			if (this.ClassProfiles.Contains(desiredProfile)) {
 
-				var response = MessageBox.Show(this, $"Are you SURE you want to delete the {desiredClass.CharacterClassName} class profile?", @"Are you SURE?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				var response = MessageBox.Show(this, $"Are you SURE you want to delete the {desiredProfile.ClassProfileName} class profile?", @"Are you SURE?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 				if (response != DialogResult.Yes) return;
 
-				var selectedIndexMinusOne = this.selectedClass.SelectedIndex - 1;
-				this.selectedClass.SelectedIndex = selectedIndexMinusOne <= 0 ? 0 : selectedIndexMinusOne;
-				this.CharacterClasses.Remove(desiredClass);
+
+				var selectedIndexMinusOne = this.selectedProfile.SelectedIndex - 1;
+				this.ClassProfiles.Remove(desiredProfile);
+				this.BindClassProfiles();
+				this.selectedProfile.SelectedIndex = selectedIndexMinusOne <= 0 ? 0 : selectedIndexMinusOne;
 			}
 
-			this.BindCharacterClasses();
-
-		}
-
-		/// <summary>
-		/// Handles the CheckedChanged event of the overrideSystem control.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void overrideSystem_CheckedChanged(object sender, EventArgs e) {
-			this.BindCharacterClasses();
 		}
 
 		/// <summary>
 		/// Handles the FormClosing event of the Main control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="FormClosingEventArgs" /> instance containing the event data.</param>
+		/// <param name="e">The <see cref="FormClosingEventArgs"/> instance containing the event data.</param>
 		private void Main_FormClosing(object sender, FormClosingEventArgs e) {
 			try {
 				this.SaveConfiguration();
@@ -464,19 +479,19 @@
 		}
 
 		/// <summary>
-		/// Races the radio checked changed.
+		/// Handles the CheckedChanged event of the raceRadio control.
 		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void raceRadio_CheckedChanged(object sender, EventArgs e) {
 			this.CharacterRace = sender == whitieRadio
-				? CharacterRace.Whitie
+				? RaceType.Whitie
 				: sender == urukHaiRadio
-					? CharacterRace.UrukHai
-					: CharacterRace.Orc
+					? RaceType.UrukHai
+					: RaceType.Orc
 					;
 
-			this.BindCharacterClass(this.RetrieveSelectedClass());
+			this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
 		}
 
 		/// <summary>
@@ -490,22 +505,11 @@
 					File.Delete(this.ConfigurationFilePath);
 				}
 				this.LoadConfiguration();
-				this.BindCharacterClasses();
+				this.BindClassProfiles();
 			}
 			catch (Exception caught) {
 				MessageBox.Show(this, $"Failure re-generating classes: {caught.Message}", @"Failure Re-Generating Classes...", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-		}
-
-		/// <summary>
-		/// Handles the TextChanged event of the selectedClass control.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-		private void selectedClass_TextChanged(object sender, EventArgs e) {
-			var desiredClass = this.RetrieveSelectedClass();
-			if (desiredClass == null) return;
-			this.BindCharacterClass(desiredClass);
 		}
 
 		/// <summary>
@@ -514,30 +518,14 @@
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
 		private void selectedClass_Validating(object sender, CancelEventArgs e) {
-			var desiredClass = this.RetrieveSelectedClass();
-			var selectedText = this.selectedClass.Text;
-			try {
-				if (desiredClass == null) {
-					if (string.IsNullOrWhiteSpace(selectedText)) {
-						e.Cancel = true;
-						return;
-					}
-
-					var dataSourceAsClassCollection = (this.selectedClass.DataSource as BindingSource)?.DataSource as CharacterClassCollection;
-					if (dataSourceAsClassCollection != null) {
-						desiredClass = dataSourceAsClassCollection.Add(selectedText);
-					}
-				}
-				this.BindCharacterClasses();
-				this.BindCharacterClass(desiredClass);
-			}
-			finally {
-				this.selectedClass.Text = selectedText;
-			}
+			this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
 		}
 
 		#endregion
 
+		private void selectedProfile_SelectedIndexChanged(object sender, EventArgs e) {
+			this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
+		}
 	}
 
 }
