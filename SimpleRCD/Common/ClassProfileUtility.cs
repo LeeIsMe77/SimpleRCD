@@ -18,7 +18,7 @@
 		/// <param name="characterRace">The character race.</param>
 		/// <param name="characterClass">The character class.</param>
 		/// <returns>System.Int32.</returns>
-		public static int CalculateClassLevel(int classPoints) {
+		public static double CalculateClassLevel(int classPoints) {
 			return CalculateClassLevel(CalculateCoefficientFromPoints(classPoints));
 		}
 
@@ -27,8 +27,8 @@
 		/// </summary>
 		/// <param name="coefficientPoints">The coefficient points.</param>
 		/// <returns>System.Int32.</returns>
-		private static int CalculateClassLevel(double coefficientPoints) {
-			return (int)Math.Floor(coefficientPoints / 100 * 30);
+		private static double CalculateClassLevel(double coefficientPoints) {
+			return coefficientPoints / 100 * 30;
 		}
 
 		#endregion

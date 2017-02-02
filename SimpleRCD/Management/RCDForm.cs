@@ -67,7 +67,7 @@
 		}
 
 		#endregion
-		
+
 		#endregion
 
 		#region Constructor
@@ -127,53 +127,70 @@
 			if (classProfile == null) {
 				classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
 			}
+
+			var currentProfile = this.selectedProfile.SelectedItem as ClassProfile;
+
 			#region Set readonly and enabled properties in applicable controls
 			this.warriorLevel.ReadOnly
-				= this.warriorPoints.ReadOnly
 				= this.rangerLevel.ReadOnly
-				= this.rangerPoints.ReadOnly
 				= this.mageLevel.ReadOnly
-				= this.magePoints.ReadOnly
 				= this.mysticLevel.ReadOnly
+				= (currentProfile == null || this.CharacterRace == RaceType.Orc);
+
+			this.warriorLevel.Enabled
+				= this.rangerLevel.Enabled
+				= this.mageLevel.Enabled
+				= this.mysticLevel.Enabled
+				= (currentProfile != null && this.CharacterRace != RaceType.Orc);
+
+			this.warriorPoints.ReadOnly
+				= this.rangerPoints.ReadOnly
+				= this.magePoints.ReadOnly
 				= this.mysticPoints.ReadOnly
-				= (this.selectedProfile.SelectedItem as ClassProfile) == null;
+				= currentProfile == null;
+
+			this.warriorPoints.Enabled
+				= this.rangerPoints.Enabled
+				= this.magePoints.Enabled
+				= this.mysticPoints.Enabled
+				= currentProfile != null;
 
 			this.clear.Enabled
 				= this.delete.Enabled
-				= (this.selectedProfile.SelectedItem as ClassProfile) != null;
+				= currentProfile != null;
 			#endregion
 
-			var defaultModifier = this.CharacterRace == RaceType.Orc ? 2m/3m : 1.0m;
+			var defaultModifier = this.CharacterRace == RaceType.Orc ? 2m / 3m : 1.0m;
 
 			#region Warrior Row
 			var warriorLevel = ClassProfileUtility.CalculateClassLevel(classProfile.WarriorPoints);
-			this.warriorLevel.Text = warriorLevel.ToString();
+			this.warriorLevel.Text = ((int)Math.Floor(warriorLevel)).ToString();
 			this.warriorPoints.Text = classProfile.WarriorPoints.ToString();
-			var modifiedWarriorLevel = ((int)Math.Floor(warriorLevel * defaultModifier));
+			var modifiedWarriorLevel = ((int)Math.Floor((decimal)warriorLevel * defaultModifier));
 			this.modifiedWarrior.Text = modifiedWarriorLevel.ToString();
 			#endregion
 
 			#region Ranger Row
 			var rangerLevel = ClassProfileUtility.CalculateClassLevel(classProfile.RangerPoints);
-			this.rangerLevel.Text = rangerLevel.ToString();
+			this.rangerLevel.Text = ((int)Math.Floor(rangerLevel)).ToString();
 			this.rangerPoints.Text = classProfile.RangerPoints.ToString();
-			var modifiedRangerLevel = ((int)Math.Floor(rangerLevel * defaultModifier));
+			var modifiedRangerLevel = ((int)Math.Floor((decimal)rangerLevel * defaultModifier));
 			this.modifiedRanger.Text = modifiedRangerLevel.ToString();
 			#endregion
 
 			#region Mystic Row
 			var mysticLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MysticPoints);
-			this.mysticLevel.Text = mysticLevel.ToString();
+			this.mysticLevel.Text = ((int)Math.Floor(mysticLevel)).ToString();
 			this.mysticPoints.Text = classProfile.MysticPoints.ToString();
-			var modifiedMysticLevel = ((int)Math.Floor(mysticLevel * defaultModifier));
+			var modifiedMysticLevel = ((int)Math.Floor((decimal)mysticLevel * defaultModifier));
 			this.modifiedMystic.Text = modifiedMysticLevel.ToString();
 			#endregion
 
 			#region Mage Row
 			var mageLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MagePoints);
-			this.mageLevel.Text = mageLevel.ToString();
+			this.mageLevel.Text = ((int)Math.Floor(mageLevel)).ToString();
 			this.magePoints.Text = classProfile.MagePoints.ToString();
-			var modifiedMageLevel = (int)Math.Floor(this.CharacterRace == RaceType.UrukHai ? mageLevel - 3 : mageLevel * defaultModifier);
+			var modifiedMageLevel = (int)Math.Floor(this.CharacterRace == RaceType.UrukHai ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
 			this.modifiedMage.Text = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel).ToString();
 			#endregion
 
@@ -210,7 +227,7 @@
 
 				try {
 					var configurationFile = XElement.Load(this.ConfigurationFilePath);
-					
+
 					this.CharacterRace = configurationFile.SafeAttributeValue<RaceType>(@"CharacterRace");
 					(this.CharacterRace == RaceType.Whitie ? this.whitieRadio : this.CharacterRace == RaceType.UrukHai ? this.urukHaiRadio : this.orcRadio).Checked = true;
 
