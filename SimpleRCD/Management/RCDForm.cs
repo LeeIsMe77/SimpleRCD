@@ -143,7 +143,7 @@
 				= (this.selectedProfile.SelectedItem as ClassProfile) != null;
 			#endregion
 
-			var defaultModifier = this.CharacterRace == RaceType.Orc ? .6m : 1.0m;
+			var defaultModifier = this.CharacterRace == RaceType.Orc ? 2m/3m : 1.0m;
 
 			#region Warrior Row
 			var warriorLevel = ClassProfileUtility.CalculateClassLevel(classProfile.WarriorPoints);
