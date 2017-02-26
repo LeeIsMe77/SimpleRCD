@@ -42,18 +42,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RCD.exe" size="45480">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RCD.exe" size="45992">
       <assemblyIdentity name="RCD" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>k61FhYp7aQDlLGIk7Olesu398b/tblodRUSjxCErsFs=</dsig:DigestValue>
+        <dsig:DigestValue>jjNK38RxaWjwg6+0OdvBa5rV/7bat6rM7HFZyw0qqvI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Properties\Assembly.ico" size="5430">
+  <file name="Properties\AssemblyIcon.ico" size="5430">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />

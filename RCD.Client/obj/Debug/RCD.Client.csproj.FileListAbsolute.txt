@@ -15,3 +15,4 @@ C:\Users\lGurley\Source\Repos\RCD\RCD.Client\bin\Debug\RCD.exe.config
 C:\Users\lGurley\Source\Repos\RCD\RCD.Client\obj\Debug\RCD.exe
 C:\Users\lGurley\Source\Repos\RCD\RCD.Client\obj\Debug\RCD.pdb
 C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.Properties.Resources.resources
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.Client.csprojResolveAssemblyReference.cache

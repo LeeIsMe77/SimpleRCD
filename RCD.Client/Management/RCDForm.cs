@@ -7,6 +7,7 @@
 	using System.Globalization;
 	using System.IO;
 	using System.Linq;
+	using System.Runtime.InteropServices;
 	using System.Windows.Forms;
 	using System.Xml.Linq;
 	using Common;
@@ -462,6 +463,28 @@
 		}
 
 		/// <summary>
+		/// Handles the Click event of the copy control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void copy_Click(object sender, EventArgs e) {
+			try {
+				Clipboard.Clear();
+				Clipboard.SetText($"{warriorPoints.Text};w;{rangerPoints.Text};r;{mysticPoints.Text};t;{magePoints.Text};m;=");
+			}
+			catch (ExternalException) { }
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure copying to clipboard: {caught.Message}",
+					@"Failure Copying Coefficient String...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
+			}
+		}
+
+		/// <summary>
 		/// Handles the Click event of the delete control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
@@ -539,20 +562,17 @@
 			this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
 		}
 
-		#endregion
-
+		/// <summary>
+		/// Handles the SelectedIndexChanged event of the selectedProfile control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void selectedProfile_SelectedIndexChanged(object sender, EventArgs e) {
 			this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
 		}
 
-		/// <summary>
-		/// Handles the Click event of the copy control.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void copy_Click(object sender, EventArgs e) {
-			Clipboard.SetText($"{warriorPoints.Text};w;{rangerPoints.Text};r;{mysticPoints.Text};t;{magePoints.Text};m;=");
-		}
+		#endregion
+
 	}
 
 }
