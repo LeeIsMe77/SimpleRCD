@@ -2,16 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/SimpleRCD/obj/Debug
-/.vs/Simple RCD/v14
-/SimpleRCD/bin/Debug/Simple RCD.zip
-/SimpleRCD/bin/Debug/Simple RCD.vshost.exe.manifest
-/SimpleRCD/bin/Debug/Simple RCD.vshost.exe.config
-/SimpleRCD/bin/Debug/Simple RCD.vshost.exe
-/SimpleRCD/bin/Debug/Simple RCD.vshost.application
-/SimpleRCD/bin/Debug/Simple RCD.pdb
-/SimpleRCD/bin/Debug/Simple RCD.exe.manifest
-/SimpleRCD/bin/Debug/Simple RCD.exe.config
-/SimpleRCD/bin/Debug/Simple RCD.application
-/RCD.Client/bin/Debug
-/RCD.Client/obj/Debug
+/.vs/SimpleRCD/v14
+/RCD.Client/bin
+/RCD.Client/obj
+/RCD.Installer/bin
+/RCD.Installer/obj
