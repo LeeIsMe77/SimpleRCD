@@ -1,0 +1,17 @@
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.Client.Management.About.resources
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.Client.Management.InputBox.resources
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.Client.Management.RCDForm.resources
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.Client.csproj.GenerateResource.Cache
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\bin\Debug\RCD.exe.config
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\bin\Debug\RCD.exe.manifest
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\bin\Debug\RCD.application
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\bin\Debug\RCD.exe
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\bin\Debug\RCD.pdb
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.exe.manifest
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.application
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.exe
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.pdb
+C:\Users\lGurley\Source\Repos\RCD\RCD.Client\bin\Debug\RCD.exe.config
+C:\Users\lGurley\Source\Repos\RCD\RCD.Client\obj\Debug\RCD.exe
+C:\Users\lGurley\Source\Repos\RCD\RCD.Client\obj\Debug\RCD.pdb
+C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\obj\Debug\RCD.Properties.Resources.resources

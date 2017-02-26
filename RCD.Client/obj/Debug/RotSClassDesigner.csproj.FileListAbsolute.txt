@@ -1,0 +1,15 @@
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\bin\Debug\Simple RCD.exe.config
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\bin\Debug\Simple RCD.exe.manifest
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\bin\Debug\Simple RCD.application
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\bin\Debug\Simple RCD.exe
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\bin\Debug\Simple RCD.pdb
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\SimpleRCD.Management.About.resources
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\SimpleRCD.Management.InputBox.resources
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\SimpleRCD.Management.RCDForm.resources
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\SimpleRCD.Properties.Resources.resources
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\RotSClassDesigner.csproj.GenerateResource.Cache
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\Simple RCD.exe.manifest
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\Simple RCD.application
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\Simple RCD.exe
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\Simple RCD.pdb
+C:\Users\lGurley\Source\Repos\SimpleRCD\SimpleRCD\obj\Debug\RotSClassDesigner.csprojResolveAssemblyReference.cache
