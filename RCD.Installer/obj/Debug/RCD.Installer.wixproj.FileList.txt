@@ -1,6 +1,0 @@
-obj\Debug\Product.wixobj
-C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Installer\bin\Debug\RCD.Installer.msi
-C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Installer\bin\Debug\RCD.Installer.wixpdb
-obj\Debug\RCD.Installer.wixproj.BindContentsFileListnull.txt
-obj\Debug\RCD.Installer.wixproj.BindOutputsFileListnull.txt
-obj\Debug\RCD.Installer.wixproj.BindBuiltOutputsFileListnull.txt

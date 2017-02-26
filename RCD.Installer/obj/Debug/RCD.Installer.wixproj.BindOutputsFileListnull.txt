@@ -1,2 +1,0 @@
-C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Installer\bin\Debug\RCD.Installer.msi
-C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Installer\bin\Debug\RCD.Installer.wixpdb

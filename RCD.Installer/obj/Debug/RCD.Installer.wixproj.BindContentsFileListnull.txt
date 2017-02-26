@@ -1,2 +1,0 @@
-C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\bin\Debug\RCD.exe
-C:\Users\lGurley\Source\Repos\SimpleRCD\RCD.Client\bin\Debug\RCD.exe.config
