@@ -79,7 +79,8 @@
 		public RCDForm() {
 			InitializeComponent();
 			this.Icon = RCD.Properties.Resources.AssemblyIcon;
-			this.CharacterRace = RaceType.Whitie;
+			this.skillsGridView.AutoGenerateColumns = false;
+			this.CharacterRace = RaceType.Light;
 			this.whitieRadio.Checked = true;
 			this.DisplayPointsRemaining(150);
 		}
@@ -103,6 +104,44 @@
 		#region Methods
 
 		#region Character Profile Management
+
+		/// <summary>
+		/// Binds the skill grid.
+		/// </summary>
+		/// <param name="classProfile">The class profile.</param>
+		private void BindSkillGrid(ClassProfile classProfile) {
+			try {
+				this.skillsGridView.DataSource = null;
+
+				var warriorLevel = string.IsNullOrWhiteSpace(modifiedWarrior.Text) ? 0 : int.Parse(modifiedWarrior.Text);
+				var rangerLevel = string.IsNullOrWhiteSpace(modifiedRanger.Text) ? 0 : int.Parse(modifiedRanger.Text);
+				var mysticLevel = string.IsNullOrWhiteSpace(modifiedMystic.Text) ? 0 : int.Parse(modifiedMystic.Text);
+				var mageLevel = string.IsNullOrWhiteSpace(modifiedMage.Text) ? 0 : int.Parse(modifiedMage.Text);
+
+				var applicableSkills = RCDCache.Skills
+					.Where(skill => (skill.Race & this.CharacterRace) == this.CharacterRace)
+					.Where(skill => 
+						(skill.Class == ClassType.Mage && skill.SkillLevel <= mageLevel) ||
+						(skill.Class == ClassType.Warrior && skill.SkillLevel <= warriorLevel) ||
+						(skill.Class == ClassType.Mystic && skill.SkillLevel <= mysticLevel) ||
+						(skill.Class == ClassType.Ranger && skill.SkillLevel <= rangerLevel)
+					)
+					.OrderBy(skill => skill.Class)
+					.ThenBy(skill => skill.SkillLevel)
+					;
+
+				this.skillsGridView.DataSource = applicableSkills.ToList();
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure binding skills: {caught.Message}",
+					@"Failure Binding Skills...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
+			}
+		}
 
 		/// <summary>
 		/// Binds the class profiles.
@@ -192,14 +231,12 @@
 			var mageLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MagePoints);
 			this.mageLevel.Text = ((int)Math.Floor(mageLevel)).ToString();
 			this.magePoints.Text = classProfile.MagePoints.ToString();
-			var modifiedMageLevel = (int)Math.Floor(this.CharacterRace == RaceType.UrukHai ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
+			var modifiedMageLevel = (int)Math.Floor(this.CharacterRace == RaceType.Uruk ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
 			this.modifiedMage.Text = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel).ToString();
 			#endregion
 
-			//var applicableSkills = RCDCache.MageSkills.Where(item => (this.CharacterRace & item.Race) == this.CharacterRace && item.SkillLevel <= modifiedMageLevel);
-			//this.skillsGridView.DataSource = applicableSkills.ToList();
-
 			this.DisplayPointsRemaining(classProfile.CalculatePointsAvailable());
+			this.BindSkillGrid(classProfile);
 		}
 
 		/// <summary>
@@ -231,7 +268,7 @@
 					var configurationFile = XElement.Load(this.ConfigurationFilePath);
 
 					this.CharacterRace = configurationFile.SafeAttributeValue<RaceType>(@"CharacterRace");
-					(this.CharacterRace == RaceType.Whitie ? this.whitieRadio : this.CharacterRace == RaceType.UrukHai ? this.urukHaiRadio : this.orcRadio).Checked = true;
+					(this.CharacterRace == RaceType.Light ? this.whitieRadio : this.CharacterRace == RaceType.Uruk ? this.urukHaiRadio : this.orcRadio).Checked = true;
 
 					var classElements = configurationFile?.Elements(@"ClassProfile");
 					if (classElements != null) {
@@ -404,8 +441,8 @@
 		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
 		/// <exception cref="Exception">The value {senderAsTextBox.Text}</exception>
 		private void classPoints_Validating(object sender, CancelEventArgs e) {
-			var desiredProfile = this.selectedProfile.SelectedItem as ClassProfile;
-			if (desiredProfile == null) return;
+			var classProfile = this.selectedProfile.SelectedItem as ClassProfile;
+			if (classProfile == null) return;
 
 			var senderAsTextBox = sender as TextBox;
 			if (senderAsTextBox == null) return;
@@ -421,18 +458,18 @@
 				}
 
 				if (senderAsTextBox == this.warriorPoints) {
-					desiredProfile.WarriorPoints = classPoints;
+					classProfile.WarriorPoints = classPoints;
 				}
 				else if (senderAsTextBox == this.rangerPoints) {
-					desiredProfile.RangerPoints = classPoints;
+					classProfile.RangerPoints = classPoints;
 				}
 				else if (senderAsTextBox == this.mysticPoints) {
-					desiredProfile.MysticPoints = classPoints;
+					classProfile.MysticPoints = classPoints;
 				}
 				else if (senderAsTextBox == this.magePoints) {
-					desiredProfile.MagePoints = classPoints;
+					classProfile.MagePoints = classPoints;
 				}
-				this.BindClassProfile(desiredProfile);
+				this.BindClassProfile(classProfile);
 			}
 			catch (Exception caught) {
 				MessageBox.Show(this, $"Failure validating input: {caught.Message}", @"Failure Validating Input...", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -526,9 +563,9 @@
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void raceRadio_CheckedChanged(object sender, EventArgs e) {
 			this.CharacterRace = sender == whitieRadio
-				? RaceType.Whitie
+				? RaceType.Light
 				: sender == urukHaiRadio
-					? RaceType.UrukHai
+					? RaceType.Uruk
 					: RaceType.Orc
 					;
 

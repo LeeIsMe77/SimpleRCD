@@ -69,6 +69,10 @@
 			this.mysticPoints = new System.Windows.Forms.TextBox();
 			this.skillsGridView = new System.Windows.Forms.DataGridView();
 			this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+			this.skillName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.skillClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.skillLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.skillRace = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.modePanel.SuspendLayout();
 			this.buttonPanel.SuspendLayout();
 			this.raceFlowLayoutPanel.SuspendLayout();
@@ -561,13 +565,17 @@
 			this.skillsGridView.AllowUserToResizeColumns = false;
 			this.skillsGridView.AllowUserToResizeRows = false;
 			this.skillsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.skillsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.skillName,
+            this.skillClass,
+            this.skillLevel,
+            this.skillRace});
 			this.skillsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.skillsGridView.Location = new System.Drawing.Point(0, 272);
 			this.skillsGridView.Name = "skillsGridView";
 			this.skillsGridView.ReadOnly = true;
 			this.skillsGridView.Size = new System.Drawing.Size(624, 138);
 			this.skillsGridView.TabIndex = 5;
-			this.skillsGridView.Visible = false;
 			// 
 			// tableLayoutPanel
 			// 
@@ -610,6 +618,35 @@
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel.Size = new System.Drawing.Size(624, 132);
 			this.tableLayoutPanel.TabIndex = 4;
+			// 
+			// skillName
+			// 
+			this.skillName.DataPropertyName = "SkillName";
+			this.skillName.HeaderText = "Name";
+			this.skillName.Name = "skillName";
+			this.skillName.ReadOnly = true;
+			// 
+			// skillClass
+			// 
+			this.skillClass.DataPropertyName = "Class";
+			this.skillClass.HeaderText = "Class";
+			this.skillClass.Name = "skillClass";
+			this.skillClass.ReadOnly = true;
+			// 
+			// skillLevel
+			// 
+			this.skillLevel.DataPropertyName = "SkillLevel";
+			this.skillLevel.HeaderText = "Level";
+			this.skillLevel.Name = "skillLevel";
+			this.skillLevel.ReadOnly = true;
+			// 
+			// skillRace
+			// 
+			this.skillRace.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.skillRace.DataPropertyName = "Race";
+			this.skillRace.HeaderText = "Race";
+			this.skillRace.Name = "skillRace";
+			this.skillRace.ReadOnly = true;
 			// 
 			// RCDForm
 			// 
@@ -693,5 +730,9 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
 		private System.Windows.Forms.Button add;
 		private System.Windows.Forms.Button copy;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillClass;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillLevel;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillRace;
 	}
 }
