@@ -3,3 +3,10 @@ February 26, 2017:
 * Added signed installer.
 * Added assembly icon.
 * Added ability to copy coefficient string to clipboard to paste into desired mud client (Ex: 57;w;21;r;21;t;0;m;=)
+
+February 27, 2017:
+
+* Corrected UI scaling.  Form is resizable again.
+* Better error handling
+* Skills grid displays all skills the character can learn with the supplied coefficients.
+* Default classes added, and reset classes functionality subsequently works.

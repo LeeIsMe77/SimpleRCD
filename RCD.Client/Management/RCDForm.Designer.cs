@@ -93,7 +93,7 @@
 			this.headerLabel.Location = new System.Drawing.Point(15, 0);
 			this.headerLabel.Name = "headerLabel";
 			this.headerLabel.Size = new System.Drawing.Size(594, 50);
-			this.headerLabel.TabIndex = 1;
+			this.headerLabel.TabIndex = 0;
 			this.headerLabel.Text = "RotS Class Designer";
 			this.headerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
@@ -153,7 +153,7 @@
 			this.buttonPanel.Location = new System.Drawing.Point(0, 530);
 			this.buttonPanel.Name = "buttonPanel";
 			this.buttonPanel.Size = new System.Drawing.Size(624, 31);
-			this.buttonPanel.TabIndex = 6;
+			this.buttonPanel.TabIndex = 5;
 			// 
 			// copy
 			// 
@@ -161,7 +161,7 @@
 			this.copy.Location = new System.Drawing.Point(354, 4);
 			this.copy.Name = "copy";
 			this.copy.Size = new System.Drawing.Size(85, 24);
-			this.copy.TabIndex = 4;
+			this.copy.TabIndex = 2;
 			this.copy.Text = "Cop&y";
 			this.copy.UseVisualStyleBackColor = true;
 			this.copy.Click += new System.EventHandler(this.copy_Click);
@@ -194,7 +194,7 @@
 			this.clear.Location = new System.Drawing.Point(445, 4);
 			this.clear.Name = "clear";
 			this.clear.Size = new System.Drawing.Size(85, 24);
-			this.clear.TabIndex = 2;
+			this.clear.TabIndex = 3;
 			this.clear.Text = "C&lear";
 			this.clear.UseVisualStyleBackColor = true;
 			this.clear.Click += new System.EventHandler(this.clear_Click);
@@ -205,7 +205,7 @@
 			this.close.Location = new System.Drawing.Point(536, 4);
 			this.close.Name = "close";
 			this.close.Size = new System.Drawing.Size(85, 24);
-			this.close.TabIndex = 3;
+			this.close.TabIndex = 4;
 			this.close.Text = "&Close";
 			this.close.UseVisualStyleBackColor = true;
 			this.close.Click += new System.EventHandler(this.close_Click);
@@ -219,7 +219,7 @@
 			this.raceFlowLayoutPanel.Location = new System.Drawing.Point(165, 35);
 			this.raceFlowLayoutPanel.Name = "raceFlowLayoutPanel";
 			this.raceFlowLayoutPanel.Size = new System.Drawing.Size(207, 26);
-			this.raceFlowLayoutPanel.TabIndex = 1;
+			this.raceFlowLayoutPanel.TabIndex = 5;
 			// 
 			// whitieRadio
 			// 
@@ -266,7 +266,7 @@
 			this.raceLabel.Location = new System.Drawing.Point(15, 32);
 			this.raceLabel.Name = "raceLabel";
 			this.raceLabel.Size = new System.Drawing.Size(144, 23);
-			this.raceLabel.TabIndex = 0;
+			this.raceLabel.TabIndex = 4;
 			this.raceLabel.Text = "Race:";
 			this.raceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -561,7 +561,7 @@
 			this.skillsGridView.Name = "skillsGridView";
 			this.skillsGridView.ReadOnly = true;
 			this.skillsGridView.Size = new System.Drawing.Size(588, 254);
-			this.skillsGridView.TabIndex = 5;
+			this.skillsGridView.TabIndex = 0;
 			// 
 			// tableLayoutPanel
 			// 
@@ -603,7 +603,7 @@
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel.Size = new System.Drawing.Size(624, 132);
-			this.tableLayoutPanel.TabIndex = 4;
+			this.tableLayoutPanel.TabIndex = 3;
 			// 
 			// skillNameColumn
 			// 
@@ -673,7 +673,7 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(624, 64);
-			this.tableLayoutPanel1.TabIndex = 7;
+			this.tableLayoutPanel1.TabIndex = 2;
 			// 
 			// tableLayoutPanel2
 			// 
@@ -690,7 +690,7 @@
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(624, 50);
-			this.tableLayoutPanel2.TabIndex = 8;
+			this.tableLayoutPanel2.TabIndex = 1;
 			// 
 			// tableLayoutPanel3
 			// 
@@ -705,7 +705,7 @@
 			this.tableLayoutPanel3.RowCount = 1;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.Size = new System.Drawing.Size(624, 260);
-			this.tableLayoutPanel3.TabIndex = 9;
+			this.tableLayoutPanel3.TabIndex = 4;
 			// 
 			// RCDForm
 			// 
