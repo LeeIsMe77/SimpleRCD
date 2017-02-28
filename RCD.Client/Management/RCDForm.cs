@@ -147,7 +147,6 @@
 		/// Binds the class profiles.
 		/// </summary>
 		private void BindClassProfiles() {
-
 			try {
 				this.selectedProfile.DataSource = null;
 				var bindingSource = new BindingSource(this.ClassProfiles, null);
@@ -155,7 +154,13 @@
 				this.selectedProfile.DisplayMember = @"ClassProfileName";
 			}
 			catch (Exception caught) {
-				MessageBox.Show(this, $"Failure binding class profiles: {caught.Message}", @"Failre Binding Class Profiles...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(
+					this, 
+					$"Failure binding class profiles: {caught.Message}", 
+					@"Failre Binding Class Profiles...", 
+					MessageBoxButtons.OK, 
+					MessageBoxIcon.Error
+					);
 			}
 		}
 
@@ -164,42 +169,41 @@
 		/// </summary>
 		/// <param name="classProfile">The class profile.</param>
 		private void BindClassProfile(ClassProfile classProfile) {
-
-			if (classProfile == null) {
-				classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
-			}
-
-			var currentProfile = this.selectedProfile.SelectedItem as ClassProfile;
-
+			//var currentProfile = this.selectedProfile.SelectedItem as ClassProfile;
 			#region Set readonly and enabled properties in applicable controls
 			this.warriorLevel.ReadOnly
 				= this.rangerLevel.ReadOnly
 				= this.mageLevel.ReadOnly
 				= this.mysticLevel.ReadOnly
-				= (currentProfile == null || this.CharacterRace == RaceType.Orc);
+				= (classProfile == null || this.CharacterRace == RaceType.Orc);
 
 			this.warriorLevel.Enabled
 				= this.rangerLevel.Enabled
 				= this.mageLevel.Enabled
 				= this.mysticLevel.Enabled
-				= (currentProfile != null && this.CharacterRace != RaceType.Orc);
+				= (classProfile != null && this.CharacterRace != RaceType.Orc);
 
 			this.warriorPoints.ReadOnly
 				= this.rangerPoints.ReadOnly
 				= this.magePoints.ReadOnly
 				= this.mysticPoints.ReadOnly
-				= currentProfile == null;
+				= classProfile == null;
 
 			this.warriorPoints.Enabled
 				= this.rangerPoints.Enabled
 				= this.magePoints.Enabled
 				= this.mysticPoints.Enabled
-				= currentProfile != null;
+				= classProfile != null;
 
 			this.clear.Enabled
 				= this.delete.Enabled
-				= currentProfile != null;
+				= classProfile != null;
 			#endregion
+
+			if (classProfile == null) {
+				//If no profile has been passed, set a default Empty profile.
+				classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
+			}
 
 			var defaultModifier = this.CharacterRace == RaceType.Orc ? 2m / 3m : 1.0m;
 
@@ -428,7 +432,13 @@
 				this.BindClassProfile(desiredProfile);
 			}
 			catch (Exception caught) {
-				MessageBox.Show(this, $"Failure validating input: {caught.Message}", @"Failure Validating Input...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(
+					this, 
+					$"Failure validating input: {caught.Message}", 
+					@"Failure Validating Input...", 
+					MessageBoxButtons.OK, 
+					MessageBoxIcon.Error
+					);
 				e.Cancel = true;
 			}
 
@@ -472,7 +482,13 @@
 				this.BindClassProfile(classProfile);
 			}
 			catch (Exception caught) {
-				MessageBox.Show(this, $"Failure validating input: {caught.Message}", @"Failure Validating Input...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(
+					this, 
+					$"Failure validating input: {caught.Message}", 
+					@"Failure Validating Input...", 
+					MessageBoxButtons.OK, 
+					MessageBoxIcon.Error
+					);
 				e.Cancel = true;
 			}
 		}
@@ -483,11 +499,11 @@
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void clear_Click(object sender, EventArgs e) {
-			var desiredProfile = this.selectedProfile.SelectedItem as ClassProfile;
-			if (desiredProfile == null) return;
-
-			desiredProfile.WarriorPoints = desiredProfile.RangerPoints = desiredProfile.MysticPoints = desiredProfile.MagePoints = 0;
-			this.BindClassProfile(desiredProfile);
+			var classProfile = this.selectedProfile.SelectedItem as ClassProfile;
+			if (classProfile == null) return;
+			
+			classProfile.WarriorPoints = classProfile.RangerPoints = classProfile.MysticPoints = classProfile.MagePoints = 0;
+			this.BindClassProfile(classProfile);
 		}
 
 		/// <summary>
@@ -539,7 +555,7 @@
 				var selectedIndexMinusOne = this.selectedProfile.SelectedIndex - 1;
 				this.ClassProfiles.Remove(desiredProfile);
 				this.BindClassProfiles();
-				this.selectedProfile.SelectedIndex = selectedIndexMinusOne <= 0 ? 0 : selectedIndexMinusOne;
+				this.selectedProfile.SelectedIndex = selectedIndexMinusOne <= -1 ? -1 : selectedIndexMinusOne;
 			}
 
 		}
@@ -586,7 +602,13 @@
 				this.BindClassProfiles();
 			}
 			catch (Exception caught) {
-				MessageBox.Show(this, $"Failure re-generating classes: {caught.Message}", @"Failure Re-Generating Classes...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(
+					this, 
+					$"Failure re-generating classes: {caught.Message}", 
+					@"Failure Re-Generating Classes...", 
+					MessageBoxButtons.OK, 
+					MessageBoxIcon.Error
+					);
 			}
 		}
 
@@ -596,7 +618,18 @@
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
 		private void selectedClass_Validating(object sender, CancelEventArgs e) {
-			this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
+			try {
+				this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure validating profile: {caught.Message}",
+					@"Failure Validating Profile...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
+			}
 		}
 
 		/// <summary>
@@ -605,7 +638,18 @@
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void selectedProfile_SelectedIndexChanged(object sender, EventArgs e) {
-			this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
+			try {
+				this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure selecting profile: {caught.Message}",
+					@"Failure Selecting Profile...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
+			}
 		}
 
 		#endregion
