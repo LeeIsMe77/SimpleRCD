@@ -5,6 +5,7 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
+	using RCD.Common;
 	#endregion
 
 	public class ClassSkill {
@@ -35,6 +36,12 @@
 		/// <value>The race.</value>
 		public RaceType Race { get; }
 
+		/// <summary>
+		/// Gets the type of the specialization.
+		/// </summary>
+		/// <value>The type of the specialization.</value>
+		public SpecializationType SpecializationType { get; }
+
 		#endregion
 
 		#region Constructor
@@ -46,11 +53,12 @@
 		/// <param name="classType">Class of the skill.</param>
 		/// <param name="skillLevel">The skill level.</param>
 		/// <param name="race">The race.</param>
-		public ClassSkill(string skillName, ClassType classType, int skillLevel, RaceType race) {
+		public ClassSkill(string skillName, ClassType classType, int skillLevel, RaceType race, SpecializationType specializationType = SpecializationType.None) {
 			this.SkillName = skillName;
 			this.Class = classType;
 			this.SkillLevel = skillLevel;
 			this.Race = race;
+			this.SpecializationType = specializationType;
 		}
 
 		#endregion

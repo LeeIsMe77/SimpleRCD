@@ -6,6 +6,7 @@
 	using System.Linq;
 	using System.Text;
 	using Common;
+	using RCD.Common;
 	#endregion
 
 	public static class RCDCache {
@@ -29,6 +30,7 @@
 			Skills = new List<ClassSkill>();
 			
 			#region Mage Skills
+
 			Skills.AddRange(
 				new[] {
 					new ClassSkill(@"Magic Missile", ClassType.Mage, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc),
@@ -40,7 +42,7 @@
 					new ClassSkill(@"Chill Ray", ClassType.Mage, 4, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Blink", ClassType.Mage, 5, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Reveal Life", ClassType.Mage, 6, RaceType.Light | RaceType.Uruk | RaceType.Orc),
-					new ClassSkill(@"Flash", ClassType.Mage, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc),
+					new ClassSkill(@"Flash", ClassType.Mage, 6, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Lightning Bolt", ClassType.Mage, 7, RaceType.Light),
 					new ClassSkill(@"Dark Bolt", ClassType.Mage, 9, RaceType.Uruk),
 					new ClassSkill(@"Vitalize Self", ClassType.Mage, 9, RaceType.Light | RaceType.Uruk | RaceType.Orc),
@@ -55,15 +57,19 @@
 					new ClassSkill(@"Relocate", ClassType.Mage, 24, RaceType.Light | RaceType.Uruk | RaceType.Orc)
 				}
 			);
+
 			#endregion
 
 			#region Ranger Skills
 
 			Skills.AddRange(
 				new[] {
+					new ClassSkill(@"Cover", ClassType.Ranger, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc, SpecializationType.Stealth),
 					new ClassSkill(@"Ride", ClassType.Ranger, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Search", ClassType.Ranger, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc),
+					new ClassSkill(@"Stalk", ClassType.Ranger, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc, SpecializationType.Stealth),
 					new ClassSkill(@"Track", ClassType.Ranger, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc),
+					new ClassSkill(@"Whistle", ClassType.Ranger, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc, SpecializationType.Animals),
 					new ClassSkill(@"Awareness", ClassType.Ranger, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Archery", ClassType.Ranger, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Calm", ClassType.Ranger, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
@@ -96,6 +102,7 @@
 					new ClassSkill(@"Slashing", ClassType.Warrior, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Spears", ClassType.Warrior, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Whips/Flails", ClassType.Warrior, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc),
+					new ClassSkill(@"Wild Swing", ClassType.Warrior, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc, SpecializationType.WildFighting),
 					new ClassSkill(@"Two-handed", ClassType.Warrior, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Weapon Mastery", ClassType.Warrior, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Kick", ClassType.Warrior, 2, RaceType.Light | RaceType.Uruk | RaceType.Orc),
@@ -112,9 +119,11 @@
 
 			Skills.AddRange(
 				new[] {
+					new ClassSkill(@"Confuse", ClassType.Mystic, 0, RaceType.Light | RaceType.Uruk | RaceType.Orc, SpecializationType.Illusion),
 					new ClassSkill(@"Curse", ClassType.Mystic, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Detect Hidden", ClassType.Mystic, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Detect Magic", ClassType.Mystic, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
+					new ClassSkill(@"Protection", ClassType.Mystic, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc, SpecializationType.Protection),
 					new ClassSkill(@"Revive", ClassType.Mystic, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Evasion", ClassType.Mystic, 2, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Hallucinate", ClassType.Mystic, 3, RaceType.Light | RaceType.Uruk | RaceType.Orc),
@@ -138,8 +147,7 @@
 					new ClassSkill(@"Terror", ClassType.Mystic, 18, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Enchant Weapon", ClassType.Mystic, 20, RaceType.Light | RaceType.Uruk | RaceType.Orc),
 					new ClassSkill(@"Death Ward", ClassType.Mystic, 20, RaceType.Light | RaceType.Uruk | RaceType.Orc),
-					new ClassSkill(@"Guardian", ClassType.Mystic, 27, RaceType.Light | RaceType.Uruk | RaceType.Orc),
-					new ClassSkill(@"Curse", ClassType.Mystic, 1, RaceType.Light | RaceType.Uruk | RaceType.Orc),
+					new ClassSkill(@"Guardian", ClassType.Mystic, 27, RaceType.Light | RaceType.Uruk | RaceType.Orc, SpecializationType.Guardian)
 				}
 			);
 

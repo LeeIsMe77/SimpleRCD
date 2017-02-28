@@ -87,6 +87,7 @@
     <Compile Include="Common\ClassProfileUtility.cs" />
     <Compile Include="Common\RaceType.cs" />
     <Compile Include="Common\ClassSkill.cs" />
+    <Compile Include="Common\SpecializationType.cs" />
     <Compile Include="Management\About.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -23,8 +23,8 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.headerLabel = new System.Windows.Forms.Label();
-			this.modePanel = new System.Windows.Forms.Panel();
 			this.add = new System.Windows.Forms.Button();
 			this.delete = new System.Windows.Forms.Button();
 			this.selectedProfile = new System.Windows.Forms.ComboBox();
@@ -40,7 +40,6 @@
 			this.urukHaiRadio = new System.Windows.Forms.RadioButton();
 			this.orcRadio = new System.Windows.Forms.RadioButton();
 			this.raceLabel = new System.Windows.Forms.Label();
-			this.racePanel = new System.Windows.Forms.Panel();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,46 +68,39 @@
 			this.mysticPoints = new System.Windows.Forms.TextBox();
 			this.skillsGridView = new System.Windows.Forms.DataGridView();
 			this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-			this.skillName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.skillClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.skillLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.skillRace = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.modePanel.SuspendLayout();
+			this.skillNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.skillClassColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.skillLevelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.skillSpecializationTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.skillRaceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.buttonPanel.SuspendLayout();
 			this.raceFlowLayoutPanel.SuspendLayout();
-			this.racePanel.SuspendLayout();
 			this.menuStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.skillsGridView)).BeginInit();
 			this.tableLayoutPanel.SuspendLayout();
+			this.tableLayoutPanel1.SuspendLayout();
+			this.tableLayoutPanel2.SuspendLayout();
+			this.tableLayoutPanel3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// headerLabel
 			// 
-			this.headerLabel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.headerLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.headerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.headerLabel.Location = new System.Drawing.Point(0, 24);
+			this.headerLabel.Location = new System.Drawing.Point(15, 0);
 			this.headerLabel.Name = "headerLabel";
-			this.headerLabel.Size = new System.Drawing.Size(624, 57);
+			this.headerLabel.Size = new System.Drawing.Size(594, 50);
 			this.headerLabel.TabIndex = 1;
 			this.headerLabel.Text = "RotS Class Designer";
 			this.headerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// modePanel
-			// 
-			this.modePanel.Controls.Add(this.add);
-			this.modePanel.Controls.Add(this.delete);
-			this.modePanel.Controls.Add(this.selectedProfile);
-			this.modePanel.Controls.Add(this.selectedClassLabel);
-			this.modePanel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.modePanel.Location = new System.Drawing.Point(0, 81);
-			this.modePanel.Name = "modePanel";
-			this.modePanel.Size = new System.Drawing.Size(624, 28);
-			this.modePanel.TabIndex = 2;
-			// 
 			// add
 			// 
 			this.add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.add.Location = new System.Drawing.Point(486, 1);
+			this.add.Location = new System.Drawing.Point(474, 3);
 			this.add.Name = "add";
 			this.add.Size = new System.Drawing.Size(60, 24);
 			this.add.TabIndex = 2;
@@ -119,7 +111,7 @@
 			// delete
 			// 
 			this.delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.delete.Location = new System.Drawing.Point(549, 1);
+			this.delete.Location = new System.Drawing.Point(549, 3);
 			this.delete.Name = "delete";
 			this.delete.Size = new System.Drawing.Size(60, 24);
 			this.delete.TabIndex = 3;
@@ -135,7 +127,7 @@
 			this.selectedProfile.FormattingEnabled = true;
 			this.selectedProfile.Location = new System.Drawing.Point(165, 3);
 			this.selectedProfile.Name = "selectedProfile";
-			this.selectedProfile.Size = new System.Drawing.Size(315, 21);
+			this.selectedProfile.Size = new System.Drawing.Size(294, 21);
 			this.selectedProfile.TabIndex = 1;
 			this.selectedProfile.SelectedIndexChanged += new System.EventHandler(this.selectedProfile_SelectedIndexChanged);
 			this.selectedProfile.Validating += new System.ComponentModel.CancelEventHandler(this.selectedClass_Validating);
@@ -143,9 +135,9 @@
 			// selectedClassLabel
 			// 
 			this.selectedClassLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.selectedClassLabel.Location = new System.Drawing.Point(13, 1);
+			this.selectedClassLabel.Location = new System.Drawing.Point(15, 0);
 			this.selectedClassLabel.Name = "selectedClassLabel";
-			this.selectedClassLabel.Size = new System.Drawing.Size(146, 23);
+			this.selectedClassLabel.Size = new System.Drawing.Size(144, 23);
 			this.selectedClassLabel.TabIndex = 0;
 			this.selectedClassLabel.Text = "Class:";
 			this.selectedClassLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -158,7 +150,7 @@
 			this.buttonPanel.Controls.Add(this.clear);
 			this.buttonPanel.Controls.Add(this.close);
 			this.buttonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.buttonPanel.Location = new System.Drawing.Point(0, 410);
+			this.buttonPanel.Location = new System.Drawing.Point(0, 530);
 			this.buttonPanel.Name = "buttonPanel";
 			this.buttonPanel.Size = new System.Drawing.Size(624, 31);
 			this.buttonPanel.TabIndex = 6;
@@ -224,7 +216,7 @@
 			this.raceFlowLayoutPanel.Controls.Add(this.whitieRadio);
 			this.raceFlowLayoutPanel.Controls.Add(this.urukHaiRadio);
 			this.raceFlowLayoutPanel.Controls.Add(this.orcRadio);
-			this.raceFlowLayoutPanel.Location = new System.Drawing.Point(165, 3);
+			this.raceFlowLayoutPanel.Location = new System.Drawing.Point(165, 35);
 			this.raceFlowLayoutPanel.Name = "raceFlowLayoutPanel";
 			this.raceFlowLayoutPanel.Size = new System.Drawing.Size(207, 26);
 			this.raceFlowLayoutPanel.TabIndex = 1;
@@ -271,25 +263,16 @@
 			// raceLabel
 			// 
 			this.raceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.raceLabel.Location = new System.Drawing.Point(13, 3);
+			this.raceLabel.Location = new System.Drawing.Point(15, 32);
 			this.raceLabel.Name = "raceLabel";
-			this.raceLabel.Size = new System.Drawing.Size(146, 23);
+			this.raceLabel.Size = new System.Drawing.Size(144, 23);
 			this.raceLabel.TabIndex = 0;
 			this.raceLabel.Text = "Race:";
 			this.raceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
-			// racePanel
-			// 
-			this.racePanel.Controls.Add(this.raceFlowLayoutPanel);
-			this.racePanel.Controls.Add(this.raceLabel);
-			this.racePanel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.racePanel.Location = new System.Drawing.Point(0, 109);
-			this.racePanel.Name = "racePanel";
-			this.racePanel.Size = new System.Drawing.Size(624, 31);
-			this.racePanel.TabIndex = 3;
-			// 
 			// menuStrip
 			// 
+			this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem,
@@ -311,7 +294,7 @@
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.closeToolStripMenuItem.Text = "Close";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.close_Click);
 			// 
@@ -326,7 +309,7 @@
 			// resetClassesToolStripMenuItem
 			// 
 			this.resetClassesToolStripMenuItem.Name = "resetClassesToolStripMenuItem";
-			this.resetClassesToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.resetClassesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.resetClassesToolStripMenuItem.Text = "Reset Classes";
 			this.resetClassesToolStripMenuItem.Click += new System.EventHandler(this.resetClassesToolStripMenuItem_Click);
 			// 
@@ -341,7 +324,7 @@
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.aboutToolStripMenuItem.Text = "About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -564,17 +547,20 @@
 			this.skillsGridView.AllowUserToDeleteRows = false;
 			this.skillsGridView.AllowUserToResizeColumns = false;
 			this.skillsGridView.AllowUserToResizeRows = false;
-			this.skillsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+			this.skillsGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+			this.skillsGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.skillsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.skillName,
-            this.skillClass,
-            this.skillLevel,
-            this.skillRace});
+            this.skillNameColumn,
+            this.skillClassColumn,
+            this.skillLevelColumn,
+            this.skillSpecializationTypeColumn,
+            this.skillRaceColumn});
 			this.skillsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.skillsGridView.Location = new System.Drawing.Point(0, 272);
+			this.skillsGridView.Location = new System.Drawing.Point(18, 3);
 			this.skillsGridView.Name = "skillsGridView";
 			this.skillsGridView.ReadOnly = true;
-			this.skillsGridView.Size = new System.Drawing.Size(624, 138);
+			this.skillsGridView.Size = new System.Drawing.Size(588, 254);
 			this.skillsGridView.TabIndex = 5;
 			// 
 			// tableLayoutPanel
@@ -607,7 +593,7 @@
 			this.tableLayoutPanel.Controls.Add(this.mysticLabel, 1, 3);
 			this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-			this.tableLayoutPanel.Location = new System.Drawing.Point(0, 140);
+			this.tableLayoutPanel.Location = new System.Drawing.Point(0, 138);
 			this.tableLayoutPanel.Name = "tableLayoutPanel";
 			this.tableLayoutPanel.RowCount = 5;
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -619,64 +605,136 @@
 			this.tableLayoutPanel.Size = new System.Drawing.Size(624, 132);
 			this.tableLayoutPanel.TabIndex = 4;
 			// 
-			// skillName
+			// skillNameColumn
 			// 
-			this.skillName.DataPropertyName = "SkillName";
-			this.skillName.HeaderText = "Name";
-			this.skillName.Name = "skillName";
-			this.skillName.ReadOnly = true;
+			this.skillNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.skillNameColumn.DataPropertyName = "SkillName";
+			this.skillNameColumn.HeaderText = "Name";
+			this.skillNameColumn.Name = "skillNameColumn";
+			this.skillNameColumn.ReadOnly = true;
+			this.skillNameColumn.Width = 60;
 			// 
-			// skillClass
+			// skillClassColumn
 			// 
-			this.skillClass.DataPropertyName = "Class";
-			this.skillClass.HeaderText = "Class";
-			this.skillClass.Name = "skillClass";
-			this.skillClass.ReadOnly = true;
+			this.skillClassColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.skillClassColumn.DataPropertyName = "Class";
+			this.skillClassColumn.HeaderText = "Class";
+			this.skillClassColumn.Name = "skillClassColumn";
+			this.skillClassColumn.ReadOnly = true;
+			this.skillClassColumn.Width = 57;
 			// 
-			// skillLevel
+			// skillLevelColumn
 			// 
-			this.skillLevel.DataPropertyName = "SkillLevel";
-			this.skillLevel.HeaderText = "Level";
-			this.skillLevel.Name = "skillLevel";
-			this.skillLevel.ReadOnly = true;
+			this.skillLevelColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.skillLevelColumn.DataPropertyName = "SkillLevel";
+			this.skillLevelColumn.HeaderText = "Level";
+			this.skillLevelColumn.Name = "skillLevelColumn";
+			this.skillLevelColumn.ReadOnly = true;
+			this.skillLevelColumn.Width = 58;
 			// 
-			// skillRace
+			// skillSpecializationTypeColumn
 			// 
-			this.skillRace.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.skillRace.DataPropertyName = "Race";
-			this.skillRace.HeaderText = "Race";
-			this.skillRace.Name = "skillRace";
-			this.skillRace.ReadOnly = true;
+			this.skillSpecializationTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.skillSpecializationTypeColumn.DataPropertyName = "SpecializationType";
+			this.skillSpecializationTypeColumn.HeaderText = "Specialization Type";
+			this.skillSpecializationTypeColumn.MinimumWidth = 20;
+			this.skillSpecializationTypeColumn.Name = "skillSpecializationTypeColumn";
+			this.skillSpecializationTypeColumn.ReadOnly = true;
+			this.skillSpecializationTypeColumn.Width = 124;
+			// 
+			// skillRaceColumn
+			// 
+			this.skillRaceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.skillRaceColumn.DataPropertyName = "Race";
+			this.skillRaceColumn.HeaderText = "Race";
+			this.skillRaceColumn.Name = "skillRaceColumn";
+			this.skillRaceColumn.ReadOnly = true;
+			// 
+			// tableLayoutPanel1
+			// 
+			this.tableLayoutPanel1.AutoSize = true;
+			this.tableLayoutPanel1.ColumnCount = 6;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.Controls.Add(this.delete, 4, 0);
+			this.tableLayoutPanel1.Controls.Add(this.add, 3, 0);
+			this.tableLayoutPanel1.Controls.Add(this.raceFlowLayoutPanel, 2, 1);
+			this.tableLayoutPanel1.Controls.Add(this.raceLabel, 1, 1);
+			this.tableLayoutPanel1.Controls.Add(this.selectedProfile, 2, 0);
+			this.tableLayoutPanel1.Controls.Add(this.selectedClassLabel, 1, 0);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 74);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			this.tableLayoutPanel1.RowCount = 2;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(624, 64);
+			this.tableLayoutPanel1.TabIndex = 7;
+			// 
+			// tableLayoutPanel2
+			// 
+			this.tableLayoutPanel2.AutoSize = true;
+			this.tableLayoutPanel2.ColumnCount = 3;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 600F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel2.Controls.Add(this.headerLabel, 1, 0);
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 24);
+			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+			this.tableLayoutPanel2.RowCount = 1;
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(624, 50);
+			this.tableLayoutPanel2.TabIndex = 8;
+			// 
+			// tableLayoutPanel3
+			// 
+			this.tableLayoutPanel3.ColumnCount = 3;
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+			this.tableLayoutPanel3.Controls.Add(this.skillsGridView, 1, 0);
+			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 270);
+			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+			this.tableLayoutPanel3.RowCount = 1;
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(624, 260);
+			this.tableLayoutPanel3.TabIndex = 9;
 			// 
 			// RCDForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(624, 441);
-			this.Controls.Add(this.skillsGridView);
+			this.ClientSize = new System.Drawing.Size(624, 561);
+			this.Controls.Add(this.tableLayoutPanel3);
 			this.Controls.Add(this.buttonPanel);
 			this.Controls.Add(this.tableLayoutPanel);
-			this.Controls.Add(this.racePanel);
-			this.Controls.Add(this.modePanel);
-			this.Controls.Add(this.headerLabel);
+			this.Controls.Add(this.tableLayoutPanel1);
+			this.Controls.Add(this.tableLayoutPanel2);
 			this.Controls.Add(this.menuStrip);
 			this.MainMenuStrip = this.menuStrip;
-			this.MaximumSize = new System.Drawing.Size(640, 480);
-			this.MinimumSize = new System.Drawing.Size(640, 480);
+			this.MinimumSize = new System.Drawing.Size(640, 400);
 			this.Name = "RCDForm";
-			this.Text = "RotS Class Designer";
+			this.Text = "SimpleRCD";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
-			this.modePanel.ResumeLayout(false);
 			this.buttonPanel.ResumeLayout(false);
 			this.raceFlowLayoutPanel.ResumeLayout(false);
 			this.raceFlowLayoutPanel.PerformLayout();
-			this.racePanel.ResumeLayout(false);
-			this.racePanel.PerformLayout();
 			this.menuStrip.ResumeLayout(false);
 			this.menuStrip.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.skillsGridView)).EndInit();
 			this.tableLayoutPanel.ResumeLayout(false);
 			this.tableLayoutPanel.PerformLayout();
+			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel1.PerformLayout();
+			this.tableLayoutPanel2.ResumeLayout(false);
+			this.tableLayoutPanel3.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -685,7 +743,6 @@
 		#endregion
 
 		private System.Windows.Forms.Label headerLabel;
-		private System.Windows.Forms.Panel modePanel;
 		private System.Windows.Forms.ComboBox selectedProfile;
 		private System.Windows.Forms.Label selectedClassLabel;
 		private System.Windows.Forms.Panel buttonPanel;
@@ -695,7 +752,6 @@
 		private System.Windows.Forms.RadioButton urukHaiRadio;
 		private System.Windows.Forms.RadioButton orcRadio;
 		private System.Windows.Forms.Label raceLabel;
-		private System.Windows.Forms.Panel racePanel;
 		private System.Windows.Forms.Label pointsRemainingLabel;
 		private System.Windows.Forms.Button clear;
 		private System.Windows.Forms.Button delete;
@@ -730,9 +786,13 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
 		private System.Windows.Forms.Button add;
 		private System.Windows.Forms.Button copy;
-		private System.Windows.Forms.DataGridViewTextBoxColumn skillName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn skillClass;
-		private System.Windows.Forms.DataGridViewTextBoxColumn skillLevel;
-		private System.Windows.Forms.DataGridViewTextBoxColumn skillRace;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillNameColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillClassColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillLevelColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillSpecializationTypeColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn skillRaceColumn;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
 	}
 }

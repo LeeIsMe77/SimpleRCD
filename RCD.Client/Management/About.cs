@@ -15,6 +15,7 @@
 		/// </summary>
 		public About() {
 			InitializeComponent();
+			this.Icon = RCD.Properties.Resources.AssemblyIcon;
 		}
 
 		#endregion

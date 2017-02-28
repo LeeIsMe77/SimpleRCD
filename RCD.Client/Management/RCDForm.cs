@@ -95,8 +95,19 @@
 		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
 		protected override void OnLoad(EventArgs e) {
 			base.OnLoad(e);
-			this.LoadConfiguration();
-			this.BindClassProfiles();
+			try {
+				this.LoadConfiguration();
+				this.BindClassProfiles();
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure loading application: {caught.Message}",
+					@"Failre Loading Application...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
+			}
 		}
 
 		#endregion
@@ -120,7 +131,7 @@
 
 				var applicableSkills = RCDCache.Skills
 					.Where(skill => (skill.Race & this.CharacterRace) == this.CharacterRace)
-					.Where(skill => 
+					.Where(skill =>
 						(skill.Class == ClassType.Mage && skill.SkillLevel <= mageLevel) ||
 						(skill.Class == ClassType.Warrior && skill.SkillLevel <= warriorLevel) ||
 						(skill.Class == ClassType.Mystic && skill.SkillLevel <= mysticLevel) ||
@@ -147,21 +158,10 @@
 		/// Binds the class profiles.
 		/// </summary>
 		private void BindClassProfiles() {
-			try {
-				this.selectedProfile.DataSource = null;
-				var bindingSource = new BindingSource(this.ClassProfiles, null);
-				this.selectedProfile.DataSource = bindingSource;
-				this.selectedProfile.DisplayMember = @"ClassProfileName";
-			}
-			catch (Exception caught) {
-				MessageBox.Show(
-					this, 
-					$"Failure binding class profiles: {caught.Message}", 
-					@"Failre Binding Class Profiles...", 
-					MessageBoxButtons.OK, 
-					MessageBoxIcon.Error
-					);
-			}
+			this.selectedProfile.DataSource = null;
+			var bindingSource = new BindingSource(this.ClassProfiles, null);
+			this.selectedProfile.DataSource = bindingSource;
+			this.selectedProfile.DisplayMember = @"ClassProfileName";
 		}
 
 		/// <summary>
@@ -266,53 +266,47 @@
 		private void LoadConfiguration() {
 			var classCollection = new ClassProfileCollection();
 
-			if (File.Exists(this.ConfigurationFilePath)) {
-
-				try {
-					var configurationFile = XElement.Load(this.ConfigurationFilePath);
-
-					this.CharacterRace = configurationFile.SafeAttributeValue<RaceType>(@"CharacterRace");
-					(this.CharacterRace == RaceType.Light ? this.whitieRadio : this.CharacterRace == RaceType.Uruk ? this.urukHaiRadio : this.orcRadio).Checked = true;
-
-					var classElements = configurationFile?.Elements(@"ClassProfile");
-					if (classElements != null) {
-						foreach (var classElement in classElements) {
-
-							var className = classElement.SafeAttributeValue<string>(@"ClassProfileName");
-							if (string.IsNullOrWhiteSpace(className)) {
-								throw new Exception(@"The class profile name cannot be blank.");
-							}
-
-							if (classCollection.Any(characterClass => characterClass.ClassProfileName.Equals(className, StringComparison.OrdinalIgnoreCase))) {
-								throw new Exception($"The class profile name {className} is a duplicate class.");
-							}
-
-							classCollection.Add(
-								className,
-								classElement.SafeAttributeValue<int>(@"WarriorPoints"),
-								classElement.SafeAttributeValue<int>(@"RangerPoints"),
-								classElement.SafeAttributeValue<int>(@"MysticPoints"),
-								classElement.SafeAttributeValue<int>(@"MagePoints")
-							);
-						}
-					}
-				}
-				catch (Exception caught) {
-					MessageBox.Show(this, $"Failure loading configuration: {caught.Message}", @"Failure Loading Configuration...", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
+			if (!File.Exists(this.ConfigurationFilePath)) {
+				classCollection.Add(@"Warrior", 100, 25, 16, 9);
+				classCollection.Add(@"Ranger", 25, 100, 9, 16);
+				classCollection.Add(@"Mystic", 16, 9, 100, 25);
+				classCollection.Add(@"Mage", 9, 16, 25, 100);
+				classCollection.Add(@"Baiken", 59, 81, 1, 9);
+				classCollection.Add(@"Barbarian", 121, 25, 4, 0);
+				classCollection.Add(@"Healer", 4, 0, 121, 25);
+				classCollection.Add(@"Wizard", 4, 9, 16, 121);
+				classCollection.Add(@"Buffer", 100, 45, 4, 1);
 			}
 			else {
-				//TODO: Add default classes based on points instead of levels.
-				//classCollection.Add(@"Warrior", 30, 15, 12, 9, true);
-				//classCollection.Add(@"Ranger", 15, 30, 9, 12, true);
-				//classCollection.Add(@"Mystic", 12, 9, 30, 15, true);
-				//classCollection.Add(@"Mage", 9, 12, 15, 30, true);
-				//classCollection.Add(@"Baiken", 23, 27, 3, 9, true);
-				//classCollection.Add(@"Barbarian", 33, 15, 6, 0, true);
-				//classCollection.Add(@"Healer", 6, 0, 33, 15, true);
-				//classCollection.Add(@"Wizard", 6, 9, 12, 33, true);
-				//classCollection.Add(@"Buffer", 30, 20, 6, 3, true);
+				var configurationFile = XElement.Load(this.ConfigurationFilePath);
+
+				this.CharacterRace = configurationFile.SafeAttributeValue<RaceType>(@"CharacterRace");
+				(this.CharacterRace == RaceType.Light ? this.whitieRadio : this.CharacterRace == RaceType.Uruk ? this.urukHaiRadio : this.orcRadio).Checked = true;
+
+				var classElements = configurationFile?.Elements(@"ClassProfile");
+				if (classElements != null) {
+					foreach (var classElement in classElements) {
+
+						var className = classElement.SafeAttributeValue<string>(@"ClassProfileName");
+						if (string.IsNullOrWhiteSpace(className)) {
+							throw new Exception(@"The class profile name cannot be blank.");
+						}
+
+						if (classCollection.Any(characterClass => characterClass.ClassProfileName.Equals(className, StringComparison.OrdinalIgnoreCase))) {
+							throw new Exception($"The class profile name {className} is a duplicate class.");
+						}
+
+						classCollection.Add(
+							className,
+							classElement.SafeAttributeValue<int>(@"WarriorPoints"),
+							classElement.SafeAttributeValue<int>(@"RangerPoints"),
+							classElement.SafeAttributeValue<int>(@"MysticPoints"),
+							classElement.SafeAttributeValue<int>(@"MagePoints")
+						);
+					}
+				}
 			}
+
 			this.ClassProfiles = classCollection;
 		}
 
@@ -324,27 +318,22 @@
 			if (!Directory.Exists(_configurationFileDirectory)) {
 				Directory.CreateDirectory(_configurationFileDirectory);
 			}
-			try {
-				var exportElement = new XElement(
-					@"ClassProfiles",
-					new XAttribute(@"CharacterRace", this.CharacterRace)
+			var exportElement = new XElement(
+				@"ClassProfiles",
+				new XAttribute(@"CharacterRace", this.CharacterRace)
+				);
+			foreach (var characterClass in this.ClassProfiles) {
+				exportElement.Add(
+					new XElement(@"ClassProfile",
+						new XAttribute(@"ClassProfileName", characterClass.ClassProfileName),
+						new XAttribute(@"MagePoints", characterClass.MagePoints),
+						new XAttribute(@"MysticPoints", characterClass.MysticPoints),
+						new XAttribute(@"RangerPoints", characterClass.RangerPoints),
+						new XAttribute(@"WarriorPoints", characterClass.WarriorPoints)
+						)
 					);
-				foreach (var characterClass in this.ClassProfiles) {
-					exportElement.Add(
-						new XElement(@"ClassProfile",
-							new XAttribute(@"ClassProfileName", characterClass.ClassProfileName),
-							new XAttribute(@"MagePoints", characterClass.MagePoints),
-							new XAttribute(@"MysticPoints", characterClass.MysticPoints),
-							new XAttribute(@"RangerPoints", characterClass.RangerPoints),
-							new XAttribute(@"WarriorPoints", characterClass.WarriorPoints)
-							)
-						);
-				}
-				exportElement.Save(this.ConfigurationFilePath);
 			}
-			catch (Exception caught) {
-				MessageBox.Show(this, $"Failure saving configuration: {caught.Message}", @"Failure Saving Configuration...", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			exportElement.Save(this.ConfigurationFilePath);
 		}
 
 		#endregion
@@ -378,7 +367,13 @@
 				}
 			}
 			catch (Exception caught) {
-				MessageBox.Show(this, $"Failure creating new class profile: {caught.Message}", @"Failure Creating Class Profile...", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(
+					this,
+					$"Failure creating class profile: {caught.Message}",
+					@"Failure Creating Class Profile...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
 			}
 		}
 
@@ -388,8 +383,19 @@
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
-			using (var form = new About()) {
-				form.ShowDialog(this);
+			try {
+				using (var form = new About()) {
+					form.ShowDialog(this);
+				}
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure displaying about: {caught.Message}",
+					@"Failure Displaying About...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
 			}
 		}
 
@@ -433,10 +439,10 @@
 			}
 			catch (Exception caught) {
 				MessageBox.Show(
-					this, 
-					$"Failure validating input: {caught.Message}", 
-					@"Failure Validating Input...", 
-					MessageBoxButtons.OK, 
+					this,
+					$"Failure validating input: {caught.Message}",
+					@"Failure Validating Input...",
+					MessageBoxButtons.OK,
 					MessageBoxIcon.Error
 					);
 				e.Cancel = true;
@@ -483,10 +489,10 @@
 			}
 			catch (Exception caught) {
 				MessageBox.Show(
-					this, 
-					$"Failure validating input: {caught.Message}", 
-					@"Failure Validating Input...", 
-					MessageBoxButtons.OK, 
+					this,
+					$"Failure validating input: {caught.Message}",
+					@"Failure Validating Input...",
+					MessageBoxButtons.OK,
 					MessageBoxIcon.Error
 					);
 				e.Cancel = true;
@@ -499,11 +505,22 @@
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void clear_Click(object sender, EventArgs e) {
-			var classProfile = this.selectedProfile.SelectedItem as ClassProfile;
-			if (classProfile == null) return;
-			
-			classProfile.WarriorPoints = classProfile.RangerPoints = classProfile.MysticPoints = classProfile.MagePoints = 0;
-			this.BindClassProfile(classProfile);
+			try {
+				var classProfile = this.selectedProfile.SelectedItem as ClassProfile;
+				if (classProfile == null) return;
+
+				classProfile.WarriorPoints = classProfile.RangerPoints = classProfile.MysticPoints = classProfile.MagePoints = 0;
+				this.BindClassProfile(classProfile);
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure clearing input: {caught.Message}",
+					@"Failure Cleaing Input...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
+			}
 		}
 
 		/// <summary>
@@ -525,11 +542,11 @@
 				Clipboard.Clear();
 				Clipboard.SetText($"{warriorPoints.Text};w;{rangerPoints.Text};r;{mysticPoints.Text};t;{magePoints.Text};m;=");
 			}
-			catch (ExternalException) { }
+			catch (ExternalException) { /*  Some applications like being stingy with the clipboard.  Swallow these exceptions. */ }
 			catch (Exception caught) {
 				MessageBox.Show(
 					this,
-					$"Failure copying to clipboard: {caught.Message}",
+					$"Failure copying coefficient string to clipboard: {caught.Message}",
 					@"Failure Copying Coefficient String...",
 					MessageBoxButtons.OK,
 					MessageBoxIcon.Error
@@ -543,19 +560,37 @@
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void delete_Click(object sender, EventArgs e) {
-			var desiredProfile = this.selectedProfile.SelectedItem as ClassProfile;
-			if (desiredProfile == null) return;
+			try {
+				var classProfile = this.selectedProfile.SelectedItem as ClassProfile;
+				if (classProfile == null) return;
 
-			if (this.ClassProfiles.Contains(desiredProfile)) {
+				if (this.ClassProfiles.Contains(classProfile)) {
 
-				var response = MessageBox.Show(this, $"Are you SURE you want to delete the {desiredProfile.ClassProfileName} class profile?", @"Are you SURE?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-				if (response != DialogResult.Yes) return;
+					var response = MessageBox.Show(
+						this,
+						$"Are you sure you want to delete the {classProfile.ClassProfileName} class profile?",
+						@"Are you sure??",
+						MessageBoxButtons.YesNo,
+						MessageBoxIcon.Question
+						);
+					if (response != DialogResult.Yes) return;
 
+					var selectedIndexMinusOne = this.selectedProfile.SelectedIndex - 1;
 
-				var selectedIndexMinusOne = this.selectedProfile.SelectedIndex - 1;
-				this.ClassProfiles.Remove(desiredProfile);
-				this.BindClassProfiles();
-				this.selectedProfile.SelectedIndex = selectedIndexMinusOne <= -1 ? -1 : selectedIndexMinusOne;
+					this.ClassProfiles.Remove(classProfile);
+					this.BindClassProfiles();
+					this.selectedProfile.SelectedIndex = selectedIndexMinusOne <= -1 ? -1 : selectedIndexMinusOne;
+				}
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure deleting profile: {caught.Message}",
+					@"Failure Deleting Profile...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
+
 			}
 
 		}
@@ -569,7 +604,7 @@
 			try {
 				this.SaveConfiguration();
 			}
-			catch { }
+			catch { /* Swallow XML exceptions to stop the program from crashing on exit. */ }
 		}
 
 		/// <summary>
@@ -578,14 +613,25 @@
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void raceRadio_CheckedChanged(object sender, EventArgs e) {
-			this.CharacterRace = sender == whitieRadio
-				? RaceType.Light
-				: sender == urukHaiRadio
-					? RaceType.Uruk
-					: RaceType.Orc
-					;
+			try {
+				this.CharacterRace = sender == whitieRadio
+					? RaceType.Light
+					: sender == urukHaiRadio
+						? RaceType.Uruk
+						: RaceType.Orc
+						;
 
-			this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
+				this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					this,
+					$"Failure changing race: {caught.Message}",
+					@"Failure Changing Race...",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+					);
+			}
 		}
 
 		/// <summary>
@@ -603,10 +649,10 @@
 			}
 			catch (Exception caught) {
 				MessageBox.Show(
-					this, 
-					$"Failure re-generating classes: {caught.Message}", 
-					@"Failure Re-Generating Classes...", 
-					MessageBoxButtons.OK, 
+					this,
+					$"Failure resetting classes: {caught.Message}",
+					@"Failure Resetting Classes...",
+					MessageBoxButtons.OK,
 					MessageBoxIcon.Error
 					);
 			}
