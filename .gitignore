@@ -7,3 +7,9 @@
 /RCD.Client/obj
 /RCD.Installer/bin
 /RCD.Installer/obj
+/RCD.Extensions/bin
+/RCD.Extensions/obj
+/RCD.Core/bin
+/RCD.Core/obj
+/RCD.WPFClient/bin
+/RCD.WPFClient/obj
