@@ -1,4 +1,4 @@
-﻿namespace RCD.Client.Common {
+﻿namespace RCD.Core.Types {
 
 	#region Directives
 	using System;
@@ -13,7 +13,7 @@
 		/// <summary>
 		/// The light side of the race war, including Boernings, Dwarves, Elves, Hobbits, and Humans
 		/// </summary>
-		[Display(Name =@"Light")]
+		[Display(Name = @"Light")]
 		Light = 0x1,
 		/// <summary>
 		/// The dark side, Uruk-Hai

@@ -1,11 +1,7 @@
-﻿namespace RCD.Client.Common {
+﻿namespace RCD.Core.Common {
 
 	#region Directives
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using RCD.Common;
+	using RCD.Core.Types;
 	#endregion
 
 	public class ClassSkill {

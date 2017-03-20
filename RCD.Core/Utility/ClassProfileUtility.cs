@@ -1,4 +1,4 @@
-﻿namespace RCD.Client.Common {
+﻿namespace RCD.Core.Utility {
 
 	#region Directives
 	using System;

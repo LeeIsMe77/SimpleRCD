@@ -43,7 +43,7 @@ namespace RCD.Client.Management {
 		/// <param name="defaultValue">The default value.</param>
 		private InputBox(string title, string valueFor, string defaultValue = null) {
 			InitializeComponent();
-			this.Icon = RCD.Properties.Resources.AssemblyIcon;
+			this.Icon = RCD.Client.Properties.Resources.AssemblyIcon;
 			this.Text = title;
 			this.inputLabel.Text = $"{valueFor}:";
 			this.input.Text = defaultValue ?? string.Empty;

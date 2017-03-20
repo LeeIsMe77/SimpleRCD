@@ -1,4 +1,4 @@
-﻿namespace RCD.Client.Common {
+﻿namespace RCD.Core.Types {
 
 	public enum ClassType {
 		Warrior,

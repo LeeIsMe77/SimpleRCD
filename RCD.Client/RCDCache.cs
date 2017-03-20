@@ -1,12 +1,9 @@
 ﻿namespace RCD.Client {
 
 	#region Directives
-	using System;
 	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using Common;
-	using RCD.Common;
+	using Core.Common;
+	using Core.Types;
 	#endregion
 
 	public static class RCDCache {

@@ -10,7 +10,9 @@
 	using System.Runtime.InteropServices;
 	using System.Windows.Forms;
 	using System.Xml.Linq;
-	using Common;
+	using Core.Common;
+	using Core.Types;
+	using Core.Utility;
 	using Extensions;
 	#endregion
 
@@ -78,11 +80,16 @@
 		/// </summary>
 		public RCDForm() {
 			InitializeComponent();
-			this.Icon = RCD.Properties.Resources.AssemblyIcon;
-			this.skillsGridView.AutoGenerateColumns = false;
-			this.CharacterRace = RaceType.Light;
-			this.whitieRadio.Checked = true;
-			this.DisplayPointsRemaining(150);
+			try {
+				this.Icon = RCD.Client.Properties.Resources.AssemblyIcon;
+				this.skillsGridView.AutoGenerateColumns = false;
+				this.CharacterRace = RaceType.Light;
+				this.whitieRadio.Checked = true;
+				this.DisplayPointsRemaining(150);
+			}
+			catch (Exception caught) {
+				MessageBox.Show(caught.Message);
+			}
 		}
 
 		#endregion

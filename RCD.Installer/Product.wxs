@@ -22,16 +22,22 @@
 
 		<ComponentGroup Id="ProductComponentGroup">
 			<Component Id="ProductComponent" Guid="{593d1349-871a-4fde-a4a3-800466e0df98}" DiskId="1" Directory="TARGETDIR" Win64="$(var.Win64)">
+				<?if $(var.ProductConfiguration) = Debug ?>
+				<File Id="RCD.pdb" Name="RCD.pdb" Source="$(var.RCD.Client.TargetDir)" />
+				<File Id="RCD.Core.pdb" Name="RCD.Core.pdb" Source="$(var.RCD.Client.TargetDir)" />
+				<File Id="RCD.Extensions.pdb" Name="RCD.Extensions.pdb" Source="$(var.RCD.Client.TargetDir)" />
+				<File Id="RCD.WPFClient.pdb" Name="RCD.WPFClient.pdb" Source="$(var.RCD.Client.TargetDir)" />
+				<?endif ?>
 				<File Id="RCD.exe" Name="RCD.exe" KeyPath="yes" Source="$(var.RCD.Client.TargetDir)" />
 				<File Id="RCD.exe.config" Name="RCD.exe.config" Source="$(var.RCD.Client.TargetDir)" />
+				<File Id="RCD.Core.dll" Name="RCD.Core.dll" Source="$(var.RCD.Client.TargetDir)" />
+				<File Id="RCD.Extensions.dll" Name="RCD.Extensions.dll" Source="$(var.RCD.Client.TargetDir)" />
+				<File Id="RCD.WPFClient.dll" Name="RCD.WPFClient.dll" Source="$(var.RCD.Client.TargetDir)" />
 				<RemoveFolder Id="StartMenuFolder" Directory="StartDirectory" On="uninstall" />
 				<Shortcut Id="ApplicationShortcut" Advertise="yes" Description="RotS Class Designer" Directory="StartDirectory" Icon="AssemblyIcon.ico" IconIndex="0" Name="RotS Class Designer" Show="normal" />
+				<Shortcut Id="ApplicationWPFShortcut" Advertise="yes" Description="RotS Class Designer WPF" Directory="StartDirectory" Icon="AssemblyIcon.ico" IconIndex="0" Name="RotS Class Designer WPF" Show="normal" Arguments="/WPF"/>
 			</Component>
 		</ComponentGroup>
-
-		<Condition Message="This application requires the Microsoft .NET Framework 4.0. Please install the .NET Framework 4.0 and all related patches then run this installer again.">
-			<![CDATA[Installed OR NETFRAMEWORK40FULL]]>
-		</Condition>
 
 		<Condition Message="This application requires the Microsoft .NET Framework 4.0.3. Please install the .NET Framework 4.0 and all related patches then run this installer again.">
 			<![CDATA[NETFRAMEWORK403FULL]]>
@@ -78,8 +84,6 @@
 		<Property Id="NETFRAMEWORK403FULL">
 			<RegistrySearch Id="NETFRAMEWORK403FULL_RegistrySearch" Type="raw" Root="HKLM" Win64="no" Key="SOFTWARE\Microsoft\Updates\Microsoft .NET Framework 4 Extended\KB2600211" Name="ThisVersionInstalled" />
 		</Property>
-
-		<PropertyRef Id="NETFRAMEWORK40FULL"/>
 
 		<SetProperty Id="ARPINSTALLLOCATION" Value="[TARGETDIR]" After="CostFinalize" />
 

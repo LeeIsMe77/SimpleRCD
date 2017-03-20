@@ -1,4 +1,4 @@
-﻿namespace RCD.Common {
+﻿namespace RCD.Core.Types {
 
 	/// <summary>
 	/// Enumeration representing types of specializations a character can obtain.

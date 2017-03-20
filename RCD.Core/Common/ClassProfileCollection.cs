@@ -1,4 +1,4 @@
-﻿namespace RCD.Client.Common {
+﻿namespace RCD.Core.Common {
 
 	#region Directives
 	using System.Collections.ObjectModel;
