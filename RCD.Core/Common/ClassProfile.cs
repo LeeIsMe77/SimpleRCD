@@ -1,5 +1,4 @@
-﻿using RCD.Core.Types;
-namespace RCD.Core.Common {
+﻿namespace RCD.Core.Common {
 
 	/// <summary>
 	/// A class which represents a class profile for generation of new characters.
@@ -8,7 +7,7 @@ namespace RCD.Core.Common {
 
 		#region Properties
 
-		#region CharacterClassName
+		#region ClassProfileName
 
 		/// <summary>
 		/// Gets or sets the name of the character class.

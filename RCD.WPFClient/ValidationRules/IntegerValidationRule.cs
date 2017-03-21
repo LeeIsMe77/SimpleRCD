@@ -1,22 +1,20 @@
 ﻿namespace RCD.WPFClient.ValidationRules {
-	
+
 	#region Directives
-	using System;
-	using System.Collections.Generic;
 	using System.Globalization;
-	using System.Linq;
-	using System.Text;
-	using System.Threading.Tasks;
 	using System.Windows.Controls;
 	#endregion
 
 	public class IntegerValidationRule
 		: ValidationRule {
 		public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
-			if (value is int) {
-				return new ValidationResult(true, null);
+			if (value != null) {
+				int parseInt;
+				if (int.TryParse(value.ToString(), NumberStyles.Integer, CultureInfo.CurrentCulture, out parseInt)) {
+					return new ValidationResult(true, null);
+				}
 			}
-			return new ValidationResult(false, @"Integers only!");
+			return new ValidationResult(false, $"{value} is not a valid integer.");
 		}
 
 	}

@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="Common\ClassProfile.cs" />
     <Compile Include="Common\ClassProfileCollection.cs" />
+    <Compile Include="Common\ClassSkillCollection.cs" />
     <Compile Include="Common\ConfigurationManager.cs" />
+    <Compile Include="RCDCache.cs" />
     <Compile Include="Utility\ClassProfileUtility.cs" />
     <Compile Include="Common\ClassSkill.cs" />
     <Compile Include="Types\ClassType.cs" />

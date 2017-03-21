@@ -9,6 +9,7 @@
 	using System.Runtime.InteropServices;
 	using System.Windows.Forms;
 	using System.Xml.Linq;
+	using Core.Cache;
 	using Core.Common;
 	using Core.Types;
 	using Core.Utility;

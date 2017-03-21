@@ -1,4 +1,4 @@
-﻿namespace RCD.Client {
+﻿namespace RCD.Core.Cache {
 
 	#region Directives
 	using System.Collections.Generic;
@@ -13,7 +13,7 @@
 		/// <summary>
 		/// A list of all <see cref="ClassSkill"/> objects which represent learnable skills in Return of the Shadow.
 		/// </summary>
-		public static List<ClassSkill> Skills;
+		public static ClassSkillCollection Skills;
 
 		#endregion
 
@@ -24,7 +24,7 @@
 		/// </summary>
 		static RCDCache() {
 
-			Skills = new List<ClassSkill>();
+			Skills = new ClassSkillCollection();
 			
 			#region Mage Skills
 

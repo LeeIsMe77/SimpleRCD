@@ -99,7 +99,6 @@
     <Compile Include="Management\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="RCDCache.cs" />
     <Compile Include="Management\RCDForm.cs">
       <SubType>Form</SubType>
     </Compile>
