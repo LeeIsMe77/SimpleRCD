@@ -4,13 +4,219 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:RCD.WPFClient"
+	xmlns:validationRules="clr-namespace:RCD.WPFClient.ValidationRules"
     mc:Ignorable="d" 
-    d:DesignHeight="300" d:DesignWidth="300"
-	Title="RotS Class Designer WPF">
+    d:DesignHeight="480" d:DesignWidth="640"
+	MinHeight="480" MinWidth="640"
+	Height="480" Width="640"
+	Title="RotS Class Designer WPF"
+	Loaded="Window_Loaded">
+
+	<Window.Resources>
+		
+		<!-- Circle Button Styles -->
+		<!--<Style x:Key="MyFocusVisual">
+			<Setter Property="Control.Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid Margin="8">
+							<Ellipse
+        						Stroke="Black"
+        						StrokeDashArray="22"
+        						StrokeThickness="1"/>
+							<Border
+        						x:Name="border"
+        						Width="{TemplateBinding ActualWidth}"
+        						Height="{TemplateBinding ActualHeight}"
+        						BorderThickness="5"								
+        						CornerRadius="2">
+							</Border>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>-->
+		<Style x:Key="GreenCircleButton" TargetType="{x:Type Control}">
+			<Setter Property="Height" Value="30"/>
+			<Setter Property="Width" Value="30"/>
+			<!--<Setter Property="FontFamily" Value="Segoe UI Light"/>-->
+			<Setter Property="FontFamily" Value="Tahoma"/>
+			<!--<Setter Property="OverridesDefaultStyle" Value="True"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Margin" Value="5"/>-->
+			<!--<Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}"/>-->
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid>
+							<Ellipse Stroke="Green" StrokeThickness="1"/>
+							<Ellipse>
+								<Ellipse.Fill>
+									<RadialGradientBrush>
+										<!--<GradientStop Offset="0" Color="LightGreen"/>
+										<GradientStop Offset="0.90" Color="LightGreen"/>
+										<GradientStop Offset="1" Color="LightGreen"/>-->
+									</RadialGradientBrush>
+								</Ellipse.Fill>
+							</Ellipse>
+							<ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="RedCircleButton" TargetType="{x:Type Control}">
+			<Setter Property="Height" Value="30"/>
+			<Setter Property="Width" Value="30"/>
+			<Setter Property="FontFamily" Value="Tahoma"/>
+			<!--<Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}"/>-->
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid>
+							<Ellipse Stroke="Red" StrokeThickness="1"/>
+							<ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Resources>
+	
 	<Grid>
-		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-		<Label Content="RotS Class Designer WPF" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22"/>
-		<Label Content="Coming Soon..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22"/>
-		</StackPanel>
+		<Grid.RowDefinitions>
+
+			<!--ToolStrip-->
+			<RowDefinition Height="20"/>
+			<!--Title-->
+			<RowDefinition Height="60"/>
+			<!--Class and Race Selection-->
+			<RowDefinition Height="80"/>
+			<!--Points and Level Selections-->
+			<RowDefinition Height="150"/>
+			<!--Skills Display-->
+			<RowDefinition Height="50*"/>
+		</Grid.RowDefinitions>
+		<GridSplitter Grid.Row="4" Height="5" HorizontalAlignment="Stretch" />
+		
+		
+
+		<!--	DockPanel for MenuBar	-->
+		<DockPanel Grid.Row="0">
+			<Menu DockPanel.Dock="Top">
+				<MenuItem Header="_File">
+					<MenuItem Name="close" Header="_Close" Click="close_Click"/>
+				</MenuItem>
+				<MenuItem Header="_Help">
+					<MenuItem Header="_About"/>
+				</MenuItem>
+			</Menu>
+		</DockPanel>
+		<!--	/DockPanel for MenuBar	-->
+
+
+		<!--	DockPanel for Title	-->
+		<DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<Label Content="RotS Class Designer" FontSize="30" FontFamily="Tahoma" Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+		</DockPanel>
+		<!--	/DockPanel for Title	-->
+
+
+		<!--	DockPanel for Class and Race Selection	-->
+		<DockPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<Grid Name="classSelectionGrid">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="150"/>
+					<ColumnDefinition Width="380"/>
+					<ColumnDefinition Width="35"/>
+					<ColumnDefinition Width="35"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+
+				<Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="Class:"/>
+				<ComboBox Name="classComboBox" Grid.Row="0" Grid.Column="2" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Margin="5,0"/>
+				<Button Name="add" Grid.Row="0" Grid.Column="3" Style="{StaticResource GreenCircleButton}" Content="Add" Click="add_Click" Margin="0" FontSize="9"/>
+				<Button Name="delete"	Grid.Row="0" Grid.Column="4" Style="{StaticResource RedCircleButton}" Content="Delete" Click="delete_Click" Margin="0" FontSize="9"/>
+				
+				<Label Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="Race:"/>
+				<StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<StackPanel.Resources>
+						<Style TargetType="{x:Type RadioButton}">
+							<Setter Property="Margin" Value="5,0,5,0"/>
+						</Style>
+					</StackPanel.Resources>
+					<RadioButton IsChecked="True" Name="lightButton" GroupName="Race" Checked="raceButton_Checked">
+						<TextBlock Text="Light" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+					</RadioButton>
+					<RadioButton Name="darkButton" GroupName="Race" Checked="raceButton_Checked">
+						<TextBlock Text="Dark" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+					</RadioButton>
+					<RadioButton Name="orcButton" GroupName="Race" Checked="raceButton_Checked">
+						<TextBlock Text="Orc" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+					</RadioButton>
+				</StackPanel>
+				
+			</Grid>
+		</DockPanel>
+		<!--	/DockPanel for Class and Race Selection	-->
+
+		<DockPanel Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="30" />
+					<RowDefinition Height="30" />
+					<RowDefinition Height="30" />
+					<RowDefinition Height="30" />
+				</Grid.RowDefinitions>
+
+				<Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Level"/>
+				<Label Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Points"/>
+				<Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Modified Level"/>
+
+				<Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Warrior:"/>
+				<TextBox Name="warriorLevel" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" >
+					<!--<TextBox.Text>
+						<Binding Path="WarriorLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+							<Binding.ValidationRules>
+								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>-->
+				</TextBox>
+				<TextBox Name="warriorPoints" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+				<TextBox Name="warriorModified" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True"/>
+
+				<Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Ranger:"/>
+				<TextBox Name="rangerLevel" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+				<TextBox Name="rangerPoints" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+				<TextBox Name="rangerModified" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True" />
+
+				<Label Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Mystic:"/>
+				<TextBox Name="mysticLevel" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+				<TextBox Name="mysticPoints" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+				<TextBox Name="mysticModified" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True" />
+
+				<Label Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Mage:"/>
+				<TextBox Name="mageLevel" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+				<TextBox Name="magePoints" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+				<TextBox Name="mageModified" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True" />
+
+			</Grid>
+		</DockPanel>
+		
 	</Grid>
 </Window>

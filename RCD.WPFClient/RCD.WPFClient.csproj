@@ -73,6 +73,7 @@
     <Compile Include="RCDManager.xaml.cs">
       <DependentUpon>RCDManager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValidationRules\IntegerValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
