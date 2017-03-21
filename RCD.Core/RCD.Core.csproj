@@ -43,12 +43,19 @@
   <ItemGroup>
     <Compile Include="Common\ClassProfile.cs" />
     <Compile Include="Common\ClassProfileCollection.cs" />
+    <Compile Include="Common\ConfigurationManager.cs" />
     <Compile Include="Utility\ClassProfileUtility.cs" />
     <Compile Include="Common\ClassSkill.cs" />
     <Compile Include="Types\ClassType.cs" />
     <Compile Include="Types\RaceType.cs" />
     <Compile Include="Types\SpecializationType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RCD.Extensions\RCD.Extensions.csproj">
+      <Project>{BDE2BD01-FB6A-418F-9FDB-D0FB18AC1BA4}</Project>
+      <Name>RCD.Extensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

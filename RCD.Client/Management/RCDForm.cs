@@ -5,7 +5,6 @@
 	using System.ComponentModel;
 	using System.Drawing;
 	using System.Globalization;
-	using System.IO;
 	using System.Linq;
 	using System.Runtime.InteropServices;
 	using System.Windows.Forms;
@@ -13,64 +12,26 @@
 	using Core.Common;
 	using Core.Types;
 	using Core.Utility;
-	using Extensions;
 	#endregion
 
 	public partial class RCDForm
 		: Form {
-
-		#region Constants
-
-		private const string CONFIGURATION_FILE_NAME = "SimpleRCD.xml";
-
-		#endregion
-
+		
 		#region Properties
 
-		#region CharacterClassCollection
+		#region ConfigurationManager
 
-		private ClassProfileCollection _classProfiles;
-
-		/// <summary>
-		/// Gets the class profiles.
-		/// </summary>
-		/// <value>The class profiles.</value>
-		public ClassProfileCollection ClassProfiles {
-			get {
-				if (_classProfiles == null) {
-					_classProfiles = new ClassProfileCollection();
-				}
-				return _classProfiles;
-			}
-			private set { _classProfiles = value; }
-		}
-
-		#endregion
-
-		#region CharacterRace
+		private ConfigurationManager _configurationManager;
 
 		/// <summary>
-		/// Gets or sets the character race.
+		/// Gets the configuration manager.
 		/// </summary>
-		/// <value>The character race.</value>
-		public RaceType CharacterRace { get; set; }
+		/// <value>The configuration manager.</value>
+		public ConfigurationManager ConfigurationManager => _configurationManager
+			?? (_configurationManager = new ConfigurationManager());
 
 		#endregion
-
-		#region ConfigurationFilePath
-
-		private string _configurationFileDirectory = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\\RotS Class Designer";
-
-		/// <summary>
-		/// Gets the configuration file path.
-		/// </summary>
-		/// <value>The configuration file path.</value>
-		public string ConfigurationFilePath {
-			get { return Path.Combine(_configurationFileDirectory, CONFIGURATION_FILE_NAME); }
-		}
-
-		#endregion
-
+		
 		#endregion
 
 		#region Constructor
@@ -82,8 +43,7 @@
 			InitializeComponent();
 			try {
 				this.Icon = RCD.Client.Properties.Resources.AssemblyIcon;
-				this.skillsGridView.AutoGenerateColumns = false;
-				this.CharacterRace = RaceType.Light;
+				this.skillsGridView.AutoGenerateColumns = false;								
 				this.whitieRadio.Checked = true;
 				this.DisplayPointsRemaining(150);
 			}
@@ -103,7 +63,6 @@
 		protected override void OnLoad(EventArgs e) {
 			base.OnLoad(e);
 			try {
-				this.LoadConfiguration();
 				this.BindClassProfiles();
 			}
 			catch (Exception caught) {
@@ -137,7 +96,7 @@
 				var mageLevel = string.IsNullOrWhiteSpace(modifiedMage.Text) ? 0 : int.Parse(modifiedMage.Text);
 
 				var applicableSkills = RCDCache.Skills
-					.Where(skill => (skill.Race & this.CharacterRace) == this.CharacterRace)
+					.Where(skill => (skill.Race & this.ConfigurationManager.Race) == this.ConfigurationManager.Race)
 					.Where(skill =>
 						(skill.Class == ClassType.Mage && skill.SkillLevel <= mageLevel) ||
 						(skill.Class == ClassType.Warrior && skill.SkillLevel <= warriorLevel) ||
@@ -166,7 +125,7 @@
 		/// </summary>
 		private void BindClassProfiles() {
 			this.selectedProfile.DataSource = null;
-			var bindingSource = new BindingSource(this.ClassProfiles, null);
+			var bindingSource = new BindingSource(this.ConfigurationManager.ClassProfiles, null);
 			this.selectedProfile.DataSource = bindingSource;
 			this.selectedProfile.DisplayMember = @"ClassProfileName";
 		}
@@ -182,13 +141,13 @@
 				= this.rangerLevel.ReadOnly
 				= this.mageLevel.ReadOnly
 				= this.mysticLevel.ReadOnly
-				= (classProfile == null || this.CharacterRace == RaceType.Orc);
+				= (classProfile == null || this.ConfigurationManager.Race == RaceType.Orc);
 
 			this.warriorLevel.Enabled
 				= this.rangerLevel.Enabled
 				= this.mageLevel.Enabled
 				= this.mysticLevel.Enabled
-				= (classProfile != null && this.CharacterRace != RaceType.Orc);
+				= (classProfile != null && this.ConfigurationManager.Race != RaceType.Orc);
 
 			this.warriorPoints.ReadOnly
 				= this.rangerPoints.ReadOnly
@@ -212,7 +171,7 @@
 				classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
 			}
 
-			var defaultModifier = this.CharacterRace == RaceType.Orc ? 2m / 3m : 1.0m;
+			var defaultModifier = this.ConfigurationManager.Race == RaceType.Orc ? 2m / 3m : 1.0m;
 
 			#region Warrior Row
 			var warriorLevel = ClassProfileUtility.CalculateClassLevel(classProfile.WarriorPoints);
@@ -242,7 +201,7 @@
 			var mageLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MagePoints);
 			this.mageLevel.Text = ((int)Math.Floor(mageLevel)).ToString();
 			this.magePoints.Text = classProfile.MagePoints.ToString();
-			var modifiedMageLevel = (int)Math.Floor(this.CharacterRace == RaceType.Uruk ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
+			var modifiedMageLevel = (int)Math.Floor(this.ConfigurationManager.Race == RaceType.Uruk ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
 			this.modifiedMage.Text = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel).ToString();
 			#endregion
 
@@ -264,87 +223,7 @@
 		}
 
 		#endregion
-
-		#region Configuration
-
-		/// <summary>
-		/// Loads the configuration.
-		/// </summary>
-		private void LoadConfiguration() {
-			var classCollection = new ClassProfileCollection();
-
-			if (!File.Exists(this.ConfigurationFilePath)) {
-				classCollection.Add(@"Warrior", 100, 25, 16, 9);
-				classCollection.Add(@"Ranger", 25, 100, 9, 16);
-				classCollection.Add(@"Mystic", 16, 9, 100, 25);
-				classCollection.Add(@"Mage", 9, 16, 25, 100);
-				classCollection.Add(@"Baiken", 59, 81, 1, 9);
-				classCollection.Add(@"Barbarian", 121, 25, 4, 0);
-				classCollection.Add(@"Healer", 4, 0, 121, 25);
-				classCollection.Add(@"Wizard", 4, 9, 16, 121);
-				classCollection.Add(@"Buffer", 100, 45, 4, 1);
-			}
-			else {
-				var configurationFile = XElement.Load(this.ConfigurationFilePath);
-
-				this.CharacterRace = configurationFile.SafeAttributeValue<RaceType>(@"CharacterRace");
-				(this.CharacterRace == RaceType.Light ? this.whitieRadio : this.CharacterRace == RaceType.Uruk ? this.urukHaiRadio : this.orcRadio).Checked = true;
-
-				var classElements = configurationFile?.Elements(@"ClassProfile");
-				if (classElements != null) {
-					foreach (var classElement in classElements) {
-
-						var className = classElement.SafeAttributeValue<string>(@"ClassProfileName");
-						if (string.IsNullOrWhiteSpace(className)) {
-							throw new Exception(@"The class profile name cannot be blank.");
-						}
-
-						if (classCollection.Any(characterClass => characterClass.ClassProfileName.Equals(className, StringComparison.OrdinalIgnoreCase))) {
-							throw new Exception($"The class profile name {className} is a duplicate class.");
-						}
-
-						classCollection.Add(
-							className,
-							classElement.SafeAttributeValue<int>(@"WarriorPoints"),
-							classElement.SafeAttributeValue<int>(@"RangerPoints"),
-							classElement.SafeAttributeValue<int>(@"MysticPoints"),
-							classElement.SafeAttributeValue<int>(@"MagePoints")
-						);
-					}
-				}
-			}
-
-			this.ClassProfiles = classCollection;
-		}
-
-		/// <summary>
-		/// Saves the configuration.
-		/// </summary>
-		private void SaveConfiguration() {
-			if (this.ClassProfiles == null) return;
-			if (!Directory.Exists(_configurationFileDirectory)) {
-				Directory.CreateDirectory(_configurationFileDirectory);
-			}
-			var exportElement = new XElement(
-				@"ClassProfiles",
-				new XAttribute(@"CharacterRace", this.CharacterRace)
-				);
-			foreach (var characterClass in this.ClassProfiles) {
-				exportElement.Add(
-					new XElement(@"ClassProfile",
-						new XAttribute(@"ClassProfileName", characterClass.ClassProfileName),
-						new XAttribute(@"MagePoints", characterClass.MagePoints),
-						new XAttribute(@"MysticPoints", characterClass.MysticPoints),
-						new XAttribute(@"RangerPoints", characterClass.RangerPoints),
-						new XAttribute(@"WarriorPoints", characterClass.WarriorPoints)
-						)
-					);
-			}
-			exportElement.Save(this.ConfigurationFilePath);
-		}
-
-		#endregion
-
+		
 		#endregion
 
 		#region Control Events
@@ -365,7 +244,7 @@
 
 				var dataSourceAsProfileCollection = (this.selectedProfile.DataSource as BindingSource)?.DataSource as ClassProfileCollection;
 				if (dataSourceAsProfileCollection != null) {
-					if (this.ClassProfiles.Any(profile => profile.ClassProfileName.Equals(newName, StringComparison.OrdinalIgnoreCase))) {
+					if (this.ConfigurationManager.ClassProfiles.Any(profile => profile.ClassProfileName.Equals(newName, StringComparison.OrdinalIgnoreCase))) {
 						throw new Exception($"A profile by the name {newName} already exists.");
 					}
 					var newClass = dataSourceAsProfileCollection.Add(newName);
@@ -571,7 +450,7 @@
 				var classProfile = this.selectedProfile.SelectedItem as ClassProfile;
 				if (classProfile == null) return;
 
-				if (this.ClassProfiles.Contains(classProfile)) {
+				if (this.ConfigurationManager.ClassProfiles.Contains(classProfile)) {
 
 					var response = MessageBox.Show(
 						this,
@@ -584,7 +463,7 @@
 
 					var selectedIndexMinusOne = this.selectedProfile.SelectedIndex - 1;
 
-					this.ClassProfiles.Remove(classProfile);
+					this.ConfigurationManager.ClassProfiles.Remove(classProfile);
 					this.BindClassProfiles();
 					this.selectedProfile.SelectedIndex = selectedIndexMinusOne <= -1 ? -1 : selectedIndexMinusOne;
 				}
@@ -609,7 +488,7 @@
 		/// <param name="e">The <see cref="FormClosingEventArgs"/> instance containing the event data.</param>
 		private void Main_FormClosing(object sender, FormClosingEventArgs e) {
 			try {
-				this.SaveConfiguration();
+				this.ConfigurationManager.SaveConfiguration();
 			}
 			catch { /* Swallow XML exceptions to stop the program from crashing on exit. */ }
 		}
@@ -621,7 +500,7 @@
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void raceRadio_CheckedChanged(object sender, EventArgs e) {
 			try {
-				this.CharacterRace = sender == whitieRadio
+				this.ConfigurationManager.Race = sender == whitieRadio
 					? RaceType.Light
 					: sender == urukHaiRadio
 						? RaceType.Uruk
@@ -648,11 +527,7 @@
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void resetClassesToolStripMenuItem_Click(object sender, EventArgs e) {
 			try {
-				if (File.Exists(this.ConfigurationFilePath)) {
-					File.Delete(this.ConfigurationFilePath);
-				}
-				this.LoadConfiguration();
-				this.BindClassProfiles();
+				this.ConfigurationManager.ResetConfiguration();
 			}
 			catch (Exception caught) {
 				MessageBox.Show(

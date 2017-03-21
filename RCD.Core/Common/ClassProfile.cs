@@ -1,7 +1,5 @@
-﻿namespace RCD.Core.Common {
-
-	#region Directives
-	#endregion
+﻿using RCD.Core.Types;
+namespace RCD.Core.Common {
 
 	/// <summary>
 	/// A class which represents a class profile for generation of new characters.
