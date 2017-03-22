@@ -53,7 +53,27 @@
 					this.OnPropertyChanged(nameof(this.RangerPoints));
 					this.OnPropertyChanged(nameof(this.MysticPoints));
 					this.OnPropertyChanged(nameof(this.MagePoints));
-					this.BindClassProfile(this.SelectedProfile);
+					//this.SetPoints();
+					this.BindLevel();
+				}
+			}
+		}
+
+		#endregion
+
+		#region Race
+		
+		/// <summary>
+		/// Gets or sets the race.
+		/// </summary>
+		/// <value>The race.</value>
+		public RaceType Race {
+			get { return _configurationManager.Race; }
+			set {
+				if (_configurationManager.Race != value) {
+					_configurationManager.Race = value;
+					this.OnPropertyChanged(nameof(this.Race));
+					this.BindLevel();
 				}
 			}
 		}
@@ -73,6 +93,7 @@
 				if (this.SelectedProfile.WarriorPoints != value) {
 					this.SelectedProfile.WarriorPoints = value;
 					this.OnPropertyChanged(nameof(this.WarriorPoints));
+					this.BindLevel();
 				}
 			}
 		}
@@ -93,6 +114,8 @@
 				if (_warriorLevel != value) {
 					_warriorLevel = value;
 					this.OnPropertyChanged(nameof(this.WarriorLevel));
+					this.SetPoints();
+					//this.BindLevel();
 				}
 			}
 		}
@@ -132,6 +155,7 @@
 				if (this.SelectedProfile.RangerPoints != value) {
 					this.SelectedProfile.RangerPoints = value;
 					this.OnPropertyChanged(nameof(this.RangerPoints));
+					this.BindLevel();
 				}
 			}
 		}
@@ -152,6 +176,8 @@
 				if (_rangerLevel != value) {
 					_rangerLevel = value;
 					this.OnPropertyChanged(nameof(this.RangerLevel));
+					this.SetPoints();
+					//this.BindLevel();
 				}
 			}
 		}
@@ -191,6 +217,7 @@
 				if (this.SelectedProfile.MysticPoints != value) {
 					this.SelectedProfile.MysticPoints = value;
 					this.OnPropertyChanged(nameof(this.MysticPoints));
+					this.BindLevel();
 				}
 			}
 		}
@@ -211,6 +238,8 @@
 				if (_mysticLevel != value) {
 					_mysticLevel = value;
 					this.OnPropertyChanged(nameof(this.MysticLevel));
+					this.SetPoints();
+					//this.BindLevel();
 				}
 			}
 		}
@@ -250,6 +279,7 @@
 				if (this.SelectedProfile.MagePoints != value) {
 					this.SelectedProfile.MagePoints = value;
 					this.OnPropertyChanged(nameof(this.MagePoints));
+					this.BindLevel();
 				}
 			}
 		}
@@ -270,6 +300,8 @@
 				if (_mageLevel != value) {
 					_mageLevel = value;
 					this.OnPropertyChanged(nameof(this.MageLevel));
+					this.SetPoints();
+					//this.BindLevel();
 				}
 			}
 		}
@@ -285,7 +317,7 @@
 		/// </summary>
 		/// <value>The mage modified level.</value>
 		public int MageModifiedLevel {
-			get { return _mageLevel; }
+			get { return _mageModifiedLevel; }
 			set {
 				if (_mageModifiedLevel != value) {
 					_mageModifiedLevel = value;
@@ -332,6 +364,8 @@
 		#endregion
 
 		#endregion
+
+		#region Skill Lists
 
 		#region WarriorSkills
 
@@ -415,6 +449,8 @@
 
 		#endregion
 
+		#endregion
+
 		#region Constructor
 
 		/// <summary>
@@ -423,7 +459,7 @@
 		/// <param name="configurationManager">The configuration manager.</param>
 		public RCDManagerViewModel(ConfigurationManager configurationManager) {
 			_configurationManager = configurationManager;
-			this.BindClassProfile(this.SelectedProfile);
+			this.BindLevel();
 		}
 
 		#endregion
@@ -431,12 +467,54 @@
 		#region Methods
 
 		#region Character Profile Management
+
+		private void SetPoints() {
+			var defaultModifier = _configurationManager.Race == RaceType.Orc ? 2m / 3m : 1.0m;
+
+			#region Warrior Row
+			this.SelectedProfile.WarriorPoints = ClassProfileUtility.CalculateClassPoints(this.WarriorLevel);
+			this.OnPropertyChanged(nameof(this.WarriorPoints));
+
+			var rawWarriorLevel = ClassProfileUtility.CalculateClassLevel(this.WarriorPoints);
+			var modifiedWarriorLevel = ((int)Math.Floor((decimal)rawWarriorLevel * defaultModifier));
+			this.WarriorModifiedLevel = modifiedWarriorLevel;
+			#endregion
+
+			#region Ranger Row
+			this.SelectedProfile.RangerPoints = ClassProfileUtility.CalculateClassPoints(this.RangerLevel);
+			this.OnPropertyChanged(nameof(this.RangerPoints));
+
+			var rawRangerLevel = ClassProfileUtility.CalculateClassLevel(this.RangerPoints);
+			var modifiedRangerLevel = ((int)Math.Floor((decimal)rawRangerLevel * defaultModifier));
+			this.RangerModifiedLevel = modifiedRangerLevel;
+			#endregion
+
+			#region Mystic Row
+			this.SelectedProfile.MysticPoints = ClassProfileUtility.CalculateClassPoints(this.MysticLevel);
+			this.OnPropertyChanged(nameof(this.MysticPoints));
+
+			var rawMysticLevel = ClassProfileUtility.CalculateClassLevel(this.MysticPoints);
+			var modifiedMysticLevel = ((int)Math.Floor((decimal)rawMysticLevel * defaultModifier));
+			this.MysticModifiedLevel = modifiedMysticLevel;
+			#endregion
+
+			#region Mage Row
+			this.SelectedProfile.MagePoints = ClassProfileUtility.CalculateClassPoints(this.MageLevel);
+			this.OnPropertyChanged(nameof(this.MagePoints));
+
+			var rawMageLevel = ClassProfileUtility.CalculateClassLevel(this.MagePoints);
+			var modifiedMageLevel = (int)Math.Floor(_configurationManager.Race == RaceType.Uruk ? (decimal)rawMageLevel - 3 : (decimal)rawMageLevel * defaultModifier);
+			this.MageModifiedLevel = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel);
+			#endregion
+
+			this.PointsRemaining = this.SelectedProfile.CalculatePointsAvailable();
+		}
 		
 		/// <summary>
 		/// Binds the class profile.
 		/// </summary>
 		/// <param name="classProfile">The class profile.</param>
-		private void BindClassProfile(ClassProfile classProfile) {
+		private void BindLevel() {
 
 			#region Set readonly and enabled properties in applicable controls
 			//this.warriorLevel.ReadOnly
@@ -468,46 +546,50 @@
 			//	= classProfile != null;
 			#endregion
 
-			if (classProfile == null) {
-				//If no profile has been passed, set a default Empty profile.
-				classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
-			}
+			//if (classProfile == null) {
+			//	//If no profile has been passed, set a default Empty profile.
+			//	classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
+			//}
 
 			var defaultModifier = _configurationManager.Race == RaceType.Orc ? 2m / 3m : 1.0m;
 
 			#region Warrior Row
-			var warriorLevel = ClassProfileUtility.CalculateClassLevel(classProfile.WarriorPoints);
-			this.WarriorLevel = ((int)Math.Floor(warriorLevel));
-			this.WarriorPoints = classProfile.WarriorPoints;
+			var warriorLevel = ClassProfileUtility.CalculateClassLevel(this.WarriorPoints);
+			_warriorLevel = ((int)Math.Floor(warriorLevel));
+			this.OnPropertyChanged(nameof(this.WarriorLevel));
+
 			var modifiedWarriorLevel = ((int)Math.Floor((decimal)warriorLevel * defaultModifier));
 			this.WarriorModifiedLevel = modifiedWarriorLevel;
 			#endregion
 
 			#region Ranger Row
-			var rangerLevel = ClassProfileUtility.CalculateClassLevel(classProfile.RangerPoints);
-			this.RangerLevel = ((int)Math.Floor(rangerLevel));
-			this.RangerPoints = classProfile.RangerPoints;
+			var rangerLevel = ClassProfileUtility.CalculateClassLevel(this.RangerPoints);
+			_rangerLevel = ((int)Math.Floor(rangerLevel));
+			this.OnPropertyChanged(nameof(this.RangerLevel));
+
 			var modifiedRangerLevel = ((int)Math.Floor((decimal)rangerLevel * defaultModifier));
 			this.RangerModifiedLevel = modifiedRangerLevel;
 			#endregion
 
 			#region Mystic Row
-			var mysticLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MysticPoints);
-			this.MysticLevel = ((int)Math.Floor(mysticLevel));
-			this.MysticPoints = classProfile.MysticPoints;
+			var mysticLevel = ClassProfileUtility.CalculateClassLevel(this.MysticPoints);
+			_mysticLevel = ((int)Math.Floor(mysticLevel));
+			this.OnPropertyChanged(nameof(this.MysticLevel));
+
 			var modifiedMysticLevel = ((int)Math.Floor((decimal)mysticLevel * defaultModifier));
 			this.MysticModifiedLevel = modifiedMysticLevel;
 			#endregion
 
 			#region Mage Row
-			var mageLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MagePoints);
-			this.MageLevel = ((int)Math.Floor(mageLevel));
-			this.MagePoints = classProfile.MagePoints;
+			var mageLevel = ClassProfileUtility.CalculateClassLevel(this.MagePoints);
+			_mageLevel = ((int)Math.Floor(mageLevel));
+			this.OnPropertyChanged(nameof(this.MageLevel));
+
 			var modifiedMageLevel = (int)Math.Floor(_configurationManager.Race == RaceType.Uruk ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
 			this.MageModifiedLevel = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel);
 			#endregion
 
-			this.PointsRemaining = classProfile.CalculatePointsAvailable();
+			this.PointsRemaining = this.SelectedProfile.CalculatePointsAvailable();
 		}
 		
 		#endregion

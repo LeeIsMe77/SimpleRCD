@@ -12,12 +12,13 @@
 	Height="480" Width="640"
 	Title="RotS Class Designer WPF"
 	WindowStartupLocation="CenterOwner"
+	
 	>
 
 	<Window.Resources>
 
-		<converters:IntegerEqualityConverter x:Key="IntegerEqualityConverter"/>
-		
+		<!--<converters:IntegerEqualityConverter x:Key="IntegerEqualityConverter"/>-->
+
 		<Style x:Key="MyFocusVisual">
 			<Setter Property="Control.Template">
 				<Setter.Value>
@@ -40,7 +41,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-		
+
 		<Style x:Key="AddCircleButton" TargetType="{x:Type Control}">
 			<Setter Property="Height" Value="15"/>
 			<Setter Property="Width" Value="15"/>
@@ -75,7 +76,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-		
+
 		<Style x:Key="DeleteCircleButton" TargetType="{x:Type Control}">
 			<Setter Property="Height" Value="15"/>
 			<Setter Property="Width" Value="15"/>
@@ -117,7 +118,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-		
+
 	</Window.Resources>
 
 	<Grid>
@@ -173,27 +174,29 @@
 
 				<Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="Class:"/>
 				<ComboBox Name="classComboBox" Grid.Row="0" Grid.Column="2" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Margin="5,0"
-						  ItemsSource="{Binding ClassProfiles}"
-						  DisplayMemberPath="ClassProfileName"
-						  SelectedValue="{Binding SelectedProfile}"
-						  />
-				<Button Name="add" Grid.Row="0" Grid.Column="3" Style="{StaticResource AddCircleButton}" Margin="0" Command="{Binding AddClassCommand}"/>
+						  ItemsSource="{Binding ClassProfiles, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="ClassProfileName" SelectedValue="{Binding SelectedProfile}" />
+				<Button Name="add" Grid.Row="0" Grid.Column="3" Style="{StaticResource AddCircleButton}" Margin="0" Command="{Binding AddClassCommand}" 
+						CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
 				<Button Name="delete"	Grid.Row="0" Grid.Column="4" Style="{StaticResource DeleteCircleButton}" Content="Delete" Margin="0" FontSize="9"/>
 
 				<Label Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="Race:"/>
 				<StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 					<StackPanel.Resources>
+						<converters:EnumBooleanConverter x:Key="enumBooleanConverter"/>
 						<Style TargetType="{x:Type RadioButton}">
 							<Setter Property="Margin" Value="5,0,5,0"/>
 						</Style>
 					</StackPanel.Resources>
-					<RadioButton IsChecked="True" Name="lightButton" GroupName="Race">
+					<RadioButton IsChecked="{Binding Race, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Light}"
+								 Name="lightButton" GroupName="Race">
 						<TextBlock Text="Light" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 					</RadioButton>
-					<RadioButton Name="darkButton" GroupName="Race">
+					<RadioButton IsChecked="{Binding Race, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Uruk}"
+						Name="darkButton" GroupName="Race">
 						<TextBlock Text="Dark" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 					</RadioButton>
-					<RadioButton Name="orcButton" GroupName="Race">
+					<RadioButton IsChecked="{Binding Race, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Orc}"
+						Name="orcButton" GroupName="Race">
 						<TextBlock Text="Orc" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 					</RadioButton>
 				</StackPanel>
@@ -228,7 +231,7 @@
 				<Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Warrior:"/>
 				<TextBox Name="warriorLevel" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" >
 					<TextBox.Text>
-						<Binding Path="WarriorLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+						<Binding Path="WarriorLevel" Mode="TwoWay" UpdateSourceTrigger="LostFocus" >
 							<Binding.ValidationRules>
 								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
 							</Binding.ValidationRules>
@@ -237,27 +240,19 @@
 				</TextBox>
 				<TextBox Name="warriorPoints" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" >
 					<TextBox.Text>
-						<Binding Path="WarriorPoints" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+						<Binding Path="WarriorPoints" Mode="TwoWay" UpdateSourceTrigger="LostFocus" >
 							<Binding.ValidationRules>
 								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
 							</Binding.ValidationRules>
 						</Binding>
 					</TextBox.Text>
 				</TextBox>
-				<TextBox Name="warriorModified" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True" >
-					<TextBox.Text>
-						<Binding Path="WarriorModifiedLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
-							<Binding.ValidationRules>
-								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
-				</TextBox>
+				<TextBox Name="warriorModified" Grid.Row="1" Grid.Column="4" Text="{Binding WarriorModifiedLevel, Mode=OneWay}"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True" />
 
 				<Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Ranger:"/>
 				<TextBox Name="rangerLevel" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0">
 					<TextBox.Text>
-						<Binding Path="RangerLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+						<Binding Path="RangerLevel" Mode="TwoWay" UpdateSourceTrigger="LostFocus" >
 							<Binding.ValidationRules>
 								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
 							</Binding.ValidationRules>
@@ -266,27 +261,19 @@
 				</TextBox>
 				<TextBox Name="rangerPoints" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0"  >
 					<TextBox.Text>
-						<Binding Path="RangerPoints" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+						<Binding Path="RangerPoints" Mode="TwoWay" UpdateSourceTrigger="LostFocus" >
 							<Binding.ValidationRules>
 								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
 							</Binding.ValidationRules>
 						</Binding>
 					</TextBox.Text>
 				</TextBox>
-				<TextBox Name="rangerModified" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True"  >
-					<TextBox.Text>
-						<Binding Path="RangerModifiedLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
-							<Binding.ValidationRules>
-								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
-				</TextBox>
+				<TextBox Name="rangerModified" Grid.Row="2" Grid.Column="4" Text="{Binding RangerModifiedLevel, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True"  />
 
 				<Label Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Mystic:"/>
 				<TextBox Name="mysticLevel" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" >
 					<TextBox.Text>
-						<Binding Path="MysticLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+						<Binding Path="MysticLevel" Mode="TwoWay" UpdateSourceTrigger="LostFocus" >
 							<Binding.ValidationRules>
 								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
 							</Binding.ValidationRules>
@@ -295,27 +282,19 @@
 				</TextBox>
 				<TextBox Name="mysticPoints" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0"  >
 					<TextBox.Text>
-						<Binding Path="MysticPoints" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+						<Binding Path="MysticPoints" Mode="TwoWay" UpdateSourceTrigger="LostFocus" >
 							<Binding.ValidationRules>
 								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
 							</Binding.ValidationRules>
 						</Binding>
 					</TextBox.Text>
 				</TextBox>
-				<TextBox Name="mysticModified" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True" >
-					<TextBox.Text>
-						<Binding Path="MysticModifiedLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
-							<Binding.ValidationRules>
-								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
-				</TextBox>
+				<TextBox Name="mysticModified" Grid.Row="3" Grid.Column="4" Text="{Binding MysticModifiedLevel, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True" />
 
 				<Label Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Mage:"/>
 				<TextBox Name="mageLevel" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" >
 					<TextBox.Text>
-						<Binding Path="MageLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+						<Binding Path="MageLevel" Mode="TwoWay" UpdateSourceTrigger="LostFocus" >
 							<Binding.ValidationRules>
 								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
 							</Binding.ValidationRules>
@@ -324,23 +303,14 @@
 				</TextBox>
 				<TextBox Name="magePoints" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0"  >
 					<TextBox.Text>
-						<Binding Path="MagePoints" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+						<Binding Path="MagePoints" Mode="TwoWay" UpdateSourceTrigger="LostFocus" >
 							<Binding.ValidationRules>
 								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
 							</Binding.ValidationRules>
 						</Binding>
 					</TextBox.Text>
 				</TextBox>
-				<TextBox Name="mageModified" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True"  >
-					<TextBox.Text>
-						<Binding Path="MageModifiedLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
-							<Binding.ValidationRules>
-								<validationRules:IntegerValidationRule ValidatesOnTargetUpdated="True"/>
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
-				</TextBox>
-
+				<TextBox Name="mageModified" Grid.Row="4" Grid.Column="4" Text="{Binding MageModifiedLevel, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" IsReadOnly="True"  />
 			</Grid>
 		</DockPanel>
 		<!--	/DockPanel for Points and Levels	-->
@@ -357,9 +327,9 @@
 										<DataTrigger.Binding>
 											<MultiBinding>
 												<MultiBinding.Converter>
-													<converters:IntegerEqualityConverter/>
+													<converters:SkillApplicabilityConverter/>
 												</MultiBinding.Converter>
-												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.WarriorLevel"/>
+												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.WarriorModifiedLevel"/>
 												<Binding Path="SkillLevel" />
 											</MultiBinding>
 										</DataTrigger.Binding>
@@ -386,9 +356,9 @@
 										<DataTrigger.Binding>
 											<MultiBinding>
 												<MultiBinding.Converter>
-													<converters:IntegerEqualityConverter/>
+													<converters:SkillApplicabilityConverter/>
 												</MultiBinding.Converter>
-												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.RangerLevel"/>
+												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.RangerModifiedLevel"/>
 												<Binding Path="SkillLevel" />
 											</MultiBinding>
 										</DataTrigger.Binding>
@@ -415,9 +385,9 @@
 										<DataTrigger.Binding>
 											<MultiBinding>
 												<MultiBinding.Converter>
-													<converters:IntegerEqualityConverter/>
+													<converters:SkillApplicabilityConverter/>
 												</MultiBinding.Converter>
-												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.MysticLevel"/>
+												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.MysticModifiedLevel"/>
 												<Binding Path="SkillLevel" />
 											</MultiBinding>
 										</DataTrigger.Binding>
@@ -444,9 +414,9 @@
 										<DataTrigger.Binding>
 											<MultiBinding>
 												<MultiBinding.Converter>
-													<converters:IntegerEqualityConverter/>
+													<converters:SkillApplicabilityConverter/>
 												</MultiBinding.Converter>
-												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.MageLevel"/>
+												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.MageModifiedLevel"/>
 												<Binding Path="SkillLevel" />
 											</MultiBinding>
 										</DataTrigger.Binding>
@@ -465,12 +435,12 @@
 					</DataGrid>
 				</TabItem>
 			</TabControl>
-			
-			
-			
-			
+
+
+
+
 		</DockPanel>
 		<!--	/DockPanel for Skills		-->
-		
+
 	</Grid>
 </Window>

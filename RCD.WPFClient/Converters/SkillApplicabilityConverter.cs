@@ -6,7 +6,7 @@
 	using System.Windows.Data;
 	#endregion
 
-	public class IntegerEqualityConverter
+	public sealed class SkillApplicabilityConverter
 		: IMultiValueConverter {
 
 		/// <summary>
