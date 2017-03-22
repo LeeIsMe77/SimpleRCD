@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:RCD.WPFClient.Views"
 	xmlns:validationRules="clr-namespace:RCD.WPFClient.ValidationRules"
+	xmlns:converters="clr-namespace:RCD.WPFClient.Converters"
     mc:Ignorable="d" 
     d:DesignHeight="480" d:DesignWidth="640"
 	MinHeight="480" MinWidth="640"
@@ -14,10 +15,37 @@
 	>
 
 	<Window.Resources>
+
+		<converters:IntegerEqualityConverter x:Key="IntegerEqualityConverter"/>
+		
+		<Style x:Key="MyFocusVisual">
+			<Setter Property="Control.Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Control}">
+						<Grid Margin="8">
+							<Ellipse
+        						x:Name="r1"
+        						Stroke="Black"
+        						StrokeDashArray="2 2"
+        						StrokeThickness="1"/>
+							<Border
+        						x:Name="border"
+        						Width="{TemplateBinding ActualWidth}"
+        						Height="{TemplateBinding ActualHeight}"
+        						BorderThickness="5"
+        						CornerRadius="2">
+							</Border>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		
 		<Style x:Key="AddCircleButton" TargetType="{x:Type Control}">
-			<Setter Property="Height" Value="20"/>
-			<Setter Property="Width" Value="20"/>
+			<Setter Property="Height" Value="15"/>
+			<Setter Property="Width" Value="15"/>
 			<Setter Property="FontFamily" Value="Tahoma"/>
+			<Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}"/>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="{x:Type Button}">
@@ -28,12 +56,12 @@
 									<Setter Property="RenderTransformOrigin" Value=".5,.5"/>
 									<Setter Property="HorizontalAlignment" Value="Center"/>
 									<Setter Property="Height" Value="1"/>
-									<Setter Property="Width" Value="10"/>
+									<Setter Property="Width" Value="5"/>
 									<Setter Property="Margin" Value="1"/>
 									<Setter Property="Stroke" Value="Green"/>
 								</Style>
 							</Grid.Resources>
-							<Ellipse Stroke="Green" StrokeThickness="1"/>
+							<Ellipse Stroke="Green" StrokeThickness="2" Fill="LightGreen"/>
 							<Rectangle />
 							<Rectangle>
 								<Rectangle.RenderTransform>
@@ -47,10 +75,12 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+		
 		<Style x:Key="DeleteCircleButton" TargetType="{x:Type Control}">
-			<Setter Property="Height" Value="20"/>
-			<Setter Property="Width" Value="20"/>
+			<Setter Property="Height" Value="15"/>
+			<Setter Property="Width" Value="15"/>
 			<Setter Property="FontFamily" Value="Tahoma"/>
+			<Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}"/>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="{x:Type Button}">
@@ -61,12 +91,12 @@
 									<Setter Property="RenderTransformOrigin" Value=".5,.5"/>
 									<Setter Property="HorizontalAlignment" Value="Center"/>
 									<Setter Property="Height" Value="1"/>
-									<Setter Property="Width" Value="10"/>
+									<Setter Property="Width" Value="5"/>
 									<Setter Property="Margin" Value="1"/>
 									<Setter Property="Stroke" Value="Red"/>
 								</Style>
 							</Grid.Resources>
-							<Ellipse Stroke="Red" StrokeThickness="1"/>
+							<Ellipse Stroke="Red" StrokeThickness="2" Fill="Pink"/>
 							<Rectangle>
 								<Rectangle.RenderTransform>
 									<TransformGroup>
@@ -87,6 +117,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+		
 	</Window.Resources>
 
 	<Grid>
@@ -129,10 +160,10 @@
 			<Grid Name="classSelectionGrid">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="150"/>
-					<ColumnDefinition Width="400"/>
-					<ColumnDefinition Width="25"/>
-					<ColumnDefinition Width="25"/>
+					<ColumnDefinition Width="75"/>
+					<ColumnDefinition Width="414*"/>
+					<ColumnDefinition Width="18"/>
+					<ColumnDefinition Width="18"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
@@ -142,7 +173,7 @@
 
 				<Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="Class:"/>
 				<ComboBox Name="classComboBox" Grid.Row="0" Grid.Column="2" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Margin="5,0"
-						  ItemsSource="{Binding Profiles}"
+						  ItemsSource="{Binding ClassProfiles}"
 						  DisplayMemberPath="ClassProfileName"
 						  SelectedValue="{Binding SelectedProfile}"
 						  />
@@ -176,10 +207,10 @@
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="150" />
-					<ColumnDefinition Width="150" />
-					<ColumnDefinition Width="150" />
-					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="75" />
+					<ColumnDefinition Width="150*" />
+					<ColumnDefinition Width="150*" />
+					<ColumnDefinition Width="150*" />
 					<ColumnDefinition Width="*" />
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
@@ -316,15 +347,128 @@
 
 		<!--	DockPanel for Skills		-->
 		<DockPanel Grid.Row="4">
-			<DataGrid x:Name="skillsGrid" RowHeaderWidth="{Binding RelativeSource={RelativeSource Self}}" AlternatingRowBackground="LightGray" ItemsSource="{Binding AvailableSkills }"  AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnWidth="Auto" CanUserAddRows="False" IsReadOnly="True" CanUserDeleteRows="False">
-				<DataGrid.Columns>
-					<DataGridTextColumn Header="Skill Name" Binding="{Binding SkillName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto"/>
-					<DataGridTextColumn Header="Race" Binding="{Binding Race, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto"/>
-					<DataGridTextColumn Header="Class" Binding="{Binding Class, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto"/>
-					<DataGridTextColumn Header="Skill Level" Binding="{Binding SkillLevel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto"/>
-					<DataGridTextColumn Header="Specialization" Binding="{Binding SpecializationType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
-				</DataGrid.Columns>
-			</DataGrid>
+			<TabControl>
+				<TabItem Header="Warrior">
+					<DataGrid x:Name="warriorsGrid" RowHeaderWidth="{Binding RelativeSource={RelativeSource Self}}" ItemsSource="{Binding WarriorSkills}"  AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnWidth="*" CanUserAddRows="False" IsReadOnly="True" CanUserDeleteRows="False">
+						<DataGrid.RowStyle>
+							<Style TargetType="{x:Type DataGridRow}">
+								<Style.Triggers>
+									<DataTrigger Value="true">
+										<DataTrigger.Binding>
+											<MultiBinding>
+												<MultiBinding.Converter>
+													<converters:IntegerEqualityConverter/>
+												</MultiBinding.Converter>
+												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.WarriorLevel"/>
+												<Binding Path="SkillLevel" />
+											</MultiBinding>
+										</DataTrigger.Binding>
+										<Setter Property="Background" Value="LightGreen"/>
+									</DataTrigger>
+								</Style.Triggers>
+								<Setter Property="Background" Value="Pink"/>
+							</Style>
+						</DataGrid.RowStyle>
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Skill Name" Binding="{Binding SkillName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+							<DataGridTextColumn Header="Race" Binding="{Binding Race, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+							<DataGridTextColumn Header="Skill Level" Binding="{Binding SkillLevel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+							<DataGridTextColumn Header="Specialization" Binding="{Binding SpecializationType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</TabItem>
+				<TabItem Header="Ranger">
+					<DataGrid x:Name="rangersGrid" RowHeaderWidth="{Binding RelativeSource={RelativeSource Self}}" ItemsSource="{Binding RangerSkills}"  AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnWidth="*" CanUserAddRows="False" IsReadOnly="True" CanUserDeleteRows="False">
+						<DataGrid.RowStyle>
+							<Style TargetType="{x:Type DataGridRow}">
+								<Style.Triggers>
+									<DataTrigger Value="true">
+										<DataTrigger.Binding>
+											<MultiBinding>
+												<MultiBinding.Converter>
+													<converters:IntegerEqualityConverter/>
+												</MultiBinding.Converter>
+												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.RangerLevel"/>
+												<Binding Path="SkillLevel" />
+											</MultiBinding>
+										</DataTrigger.Binding>
+										<Setter Property="Background" Value="LightGreen"/>
+									</DataTrigger>
+								</Style.Triggers>
+								<Setter Property="Background" Value="Pink"/>
+							</Style>
+						</DataGrid.RowStyle>
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Skill Name" Binding="{Binding SkillName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+							<DataGridTextColumn Header="Race" Binding="{Binding Race, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+							<DataGridTextColumn Header="Skill Level" Binding="{Binding SkillLevel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+							<DataGridTextColumn Header="Specialization" Binding="{Binding SpecializationType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</TabItem>
+				<TabItem Header="Mystic">
+					<DataGrid x:Name="mysticsGrid" RowHeaderWidth="{Binding RelativeSource={RelativeSource Self}}" ItemsSource="{Binding MysticSkills}"  AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnWidth="*" CanUserAddRows="False" IsReadOnly="True" CanUserDeleteRows="False">
+						<DataGrid.RowStyle>
+							<Style TargetType="{x:Type DataGridRow}">
+								<Style.Triggers>
+									<DataTrigger Value="true">
+										<DataTrigger.Binding>
+											<MultiBinding>
+												<MultiBinding.Converter>
+													<converters:IntegerEqualityConverter/>
+												</MultiBinding.Converter>
+												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.MysticLevel"/>
+												<Binding Path="SkillLevel" />
+											</MultiBinding>
+										</DataTrigger.Binding>
+										<Setter Property="Background" Value="LightGreen"/>
+									</DataTrigger>
+								</Style.Triggers>
+								<Setter Property="Background" Value="Pink"/>
+							</Style>
+						</DataGrid.RowStyle>
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Skill Name" Binding="{Binding SkillName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+							<DataGridTextColumn Header="Race" Binding="{Binding Race, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+							<DataGridTextColumn Header="Skill Level" Binding="{Binding SkillLevel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+							<DataGridTextColumn Header="Specialization" Binding="{Binding SpecializationType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</TabItem>
+				<TabItem Header="Mage">
+					<DataGrid x:Name="magesGrid" RowHeaderWidth="{Binding RelativeSource={RelativeSource Self}}" ItemsSource="{Binding MageSkills}"  AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnWidth="*" CanUserAddRows="False" IsReadOnly="True" CanUserDeleteRows="False">
+						<DataGrid.RowStyle>
+							<Style TargetType="{x:Type DataGridRow}">
+								<Style.Triggers>
+									<DataTrigger Value="true">
+										<DataTrigger.Binding>
+											<MultiBinding>
+												<MultiBinding.Converter>
+													<converters:IntegerEqualityConverter/>
+												</MultiBinding.Converter>
+												<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.MageLevel"/>
+												<Binding Path="SkillLevel" />
+											</MultiBinding>
+										</DataTrigger.Binding>
+										<Setter Property="Background" Value="LightGreen"/>
+									</DataTrigger>
+								</Style.Triggers>
+								<Setter Property="Background" Value="Pink"/>
+							</Style>
+						</DataGrid.RowStyle>
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Skill Name" Binding="{Binding SkillName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+							<DataGridTextColumn Header="Race" Binding="{Binding Race, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+							<DataGridTextColumn Header="Skill Level" Binding="{Binding SkillLevel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+							<DataGridTextColumn Header="Specialization" Binding="{Binding SpecializationType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</TabItem>
+			</TabControl>
+			
+			
+			
+			
 		</DockPanel>
 		<!--	/DockPanel for Skills		-->
 		

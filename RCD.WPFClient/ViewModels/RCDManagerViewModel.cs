@@ -23,13 +23,13 @@
 
 		#region Properties
 
-		#region Profiles
+		#region ClassProfiles
 
 		/// <summary>
-		/// Gets the profiles.
+		/// Gets the class profiles.
 		/// </summary>
-		/// <value>The profiles.</value>
-		public ClassProfileCollection Profiles {
+		/// <value>The class profiles.</value>
+		public ClassProfileCollection ClassProfiles {
 			get { return _configurationManager.ClassProfiles; }			
 		}
 
@@ -44,7 +44,7 @@
 		/// </summary>
 		/// <value>The selected profile.</value>
 		public ClassProfile SelectedProfile {
-			get { return _selectedProfile ?? this.Profiles.FirstOrDefault() ?? this.Profiles.Add(@"New Profile", 0, 0, 0, 0); }
+			get { return _selectedProfile ?? this.ClassProfiles.FirstOrDefault() ?? this.ClassProfiles.Add(@"New Profile", 0, 0, 0, 0); }
 			set {
 				if (_selectedProfile != value) {
 					_selectedProfile = value;
@@ -79,63 +79,6 @@
 
 		#endregion
 
-		#region RangerPoints
-
-		/// <summary>
-		/// Gets or sets the ranger points.
-		/// </summary>
-		/// <value>The ranger points.</value>
-		public int RangerPoints {
-			get { return this.SelectedProfile?.RangerPoints ?? 0; }
-			set {
-				if (this.SelectedProfile == null) return;
-				if (this.SelectedProfile.RangerPoints != value) {
-					this.SelectedProfile.RangerPoints = value;
-					this.OnPropertyChanged(nameof(this.RangerPoints));
-				}
-			}
-		}
-
-		#endregion
-
-		#region MysticPoints
-
-		/// <summary>
-		/// Gets or sets the mystic points.
-		/// </summary>
-		/// <value>The mystic points.</value>
-		public int MysticPoints {
-			get { return this.SelectedProfile?.MysticPoints ?? 0; }
-			set {
-				if (this.SelectedProfile == null) return;
-				if (this.SelectedProfile.MysticPoints != value) {
-					this.SelectedProfile.MysticPoints = value;
-					this.OnPropertyChanged(nameof(this.MysticPoints));
-				}
-			}
-		}
-
-		#endregion
-
-		#region MagePoints
-
-		/// <summary>
-		/// Gets or sets the mage points.
-		/// </summary>
-		/// <value>The mage points.</value>
-		public int MagePoints {
-			get { return this.SelectedProfile?.MagePoints ?? 0; }
-			set {
-				if (this.SelectedProfile == null) return;
-				if (this.SelectedProfile.MagePoints != value) {
-					this.SelectedProfile.MagePoints = value;
-					this.OnPropertyChanged(nameof(this.MagePoints));
-				}
-			}
-		}
-
-		#endregion
-
 		#region WarriorLevel
 
 		private int _warriorLevel;
@@ -150,66 +93,6 @@
 				if (_warriorLevel != value) {
 					_warriorLevel = value;
 					this.OnPropertyChanged(nameof(this.WarriorLevel));
-				}
-			}
-		}
-
-		#endregion
-
-		#region RangerLevel
-
-		private int _rangerLevel;
-
-		/// <summary>
-		/// Gets or sets the ranger level.
-		/// </summary>
-		/// <value>The ranger level.</value>
-		public int RangerLevel {
-			get { return _rangerLevel; }
-			set {
-				if (_rangerLevel != value) {
-					_rangerLevel = value;
-					this.OnPropertyChanged(nameof(this.RangerLevel));
-				}
-			}
-		}
-
-		#endregion
-
-		#region MysticLevel
-
-		private int _mysticLevel;
-
-		/// <summary>
-		/// Gets or sets the mystic level.
-		/// </summary>
-		/// <value>The mystic level.</value>
-		public int MysticLevel {
-			get { return _mysticLevel; }
-			set {
-				if (_mysticLevel != value) {
-					_mysticLevel = value;
-					this.OnPropertyChanged(nameof(this.MysticLevel));
-				}
-			}
-		}
-
-		#endregion
-
-		#region MageLevel
-
-		private int _mageLevel;
-
-		/// <summary>
-		/// Gets or sets the mage level.
-		/// </summary>
-		/// <value>The mage level.</value>
-		public int MageLevel {
-			get { return _mageLevel; }
-			set {
-				if (_mageLevel != value) {
-					_mageLevel = value;
-					this.OnPropertyChanged(nameof(this.MageLevel));
 				}
 			}
 		}
@@ -236,6 +119,45 @@
 
 		#endregion
 
+		#region RangerPoints
+
+		/// <summary>
+		/// Gets or sets the ranger points.
+		/// </summary>
+		/// <value>The ranger points.</value>
+		public int RangerPoints {
+			get { return this.SelectedProfile?.RangerPoints ?? 0; }
+			set {
+				if (this.SelectedProfile == null) return;
+				if (this.SelectedProfile.RangerPoints != value) {
+					this.SelectedProfile.RangerPoints = value;
+					this.OnPropertyChanged(nameof(this.RangerPoints));
+				}
+			}
+		}
+
+		#endregion
+
+		#region RangerLevel
+
+		private int _rangerLevel;
+
+		/// <summary>
+		/// Gets or sets the ranger level.
+		/// </summary>
+		/// <value>The ranger level.</value>
+		public int RangerLevel {
+			get { return _rangerLevel; }
+			set {
+				if (_rangerLevel != value) {
+					_rangerLevel = value;
+					this.OnPropertyChanged(nameof(this.RangerLevel));
+				}
+			}
+		}
+
+		#endregion
+
 		#region RangerModifiedLevel
 
 		private int _rangerModifiedLevel;
@@ -256,6 +178,45 @@
 
 		#endregion
 
+		#region MysticPoints
+
+		/// <summary>
+		/// Gets or sets the mystic points.
+		/// </summary>
+		/// <value>The mystic points.</value>
+		public int MysticPoints {
+			get { return this.SelectedProfile?.MysticPoints ?? 0; }
+			set {
+				if (this.SelectedProfile == null) return;
+				if (this.SelectedProfile.MysticPoints != value) {
+					this.SelectedProfile.MysticPoints = value;
+					this.OnPropertyChanged(nameof(this.MysticPoints));
+				}
+			}
+		}
+
+		#endregion
+
+		#region MysticLevel
+
+		private int _mysticLevel;
+
+		/// <summary>
+		/// Gets or sets the mystic level.
+		/// </summary>
+		/// <value>The mystic level.</value>
+		public int MysticLevel {
+			get { return _mysticLevel; }
+			set {
+				if (_mysticLevel != value) {
+					_mysticLevel = value;
+					this.OnPropertyChanged(nameof(this.MysticLevel));
+				}
+			}
+		}
+
+		#endregion
+
 		#region MysticModifiedLevel
 
 		private int _mysticModifiedLevel;
@@ -270,6 +231,45 @@
 				if (_mysticModifiedLevel != value) {
 					_mysticModifiedLevel = value;
 					this.OnPropertyChanged(nameof(this.MysticModifiedLevel));
+				}
+			}
+		}
+
+		#endregion
+
+		#region MagePoints
+
+		/// <summary>
+		/// Gets or sets the mage points.
+		/// </summary>
+		/// <value>The mage points.</value>
+		public int MagePoints {
+			get { return this.SelectedProfile?.MagePoints ?? 0; }
+			set {
+				if (this.SelectedProfile == null) return;
+				if (this.SelectedProfile.MagePoints != value) {
+					this.SelectedProfile.MagePoints = value;
+					this.OnPropertyChanged(nameof(this.MagePoints));
+				}
+			}
+		}
+
+		#endregion
+
+		#region MageLevel
+
+		private int _mageLevel;
+
+		/// <summary>
+		/// Gets or sets the mage level.
+		/// </summary>
+		/// <value>The mage level.</value>
+		public int MageLevel {
+			get { return _mageLevel; }
+			set {
+				if (_mageLevel != value) {
+					_mageLevel = value;
+					this.OnPropertyChanged(nameof(this.MageLevel));
 				}
 			}
 		}
@@ -333,21 +333,81 @@
 
 		#endregion
 
-		#region AvailableSkills
+		#region WarriorSkills
 
-		private ClassSkillCollection _availableSkills;
+		private ClassSkillCollection _warriorSkills;
 
 		/// <summary>
 		/// Gets or sets the available skills.
 		/// </summary>
 		/// <value>The available skills.</value>
-		public ClassSkillCollection AvailableSkills {
-			get { return _availableSkills ?? (_availableSkills = new ClassSkillCollection()); }
-			set {
-				if (_availableSkills != value) {
-					_availableSkills = value;
-					this.OnPropertyChanged(nameof(this.AvailableSkills));
+		public ClassSkillCollection WarriorSkills {
+			get {
+				if (_warriorSkills == null) {
+					_warriorSkills = new ClassSkillCollection();
+					_warriorSkills.AddRange(RCDCache.Skills.Where(item => item.Class == ClassType.Warrior));
 				}
+				return _warriorSkills;
+			}
+		}
+
+		#endregion
+
+		#region RangerSkills
+
+		private ClassSkillCollection _rangerSkills;
+
+		/// <summary>
+		/// Gets or sets the available skills.
+		/// </summary>
+		/// <value>The available skills.</value>
+		public ClassSkillCollection RangerSkills {
+			get {
+				if (_rangerSkills == null) {
+					_rangerSkills = new ClassSkillCollection();
+					_rangerSkills.AddRange(RCDCache.Skills.Where(item => item.Class == ClassType.Ranger));
+				}
+				return _rangerSkills;
+			}
+		}
+
+		#endregion
+
+		#region MysticSkills
+
+		private ClassSkillCollection _mysticSkills;
+
+		/// <summary>
+		/// Gets or sets the available skills.
+		/// </summary>
+		/// <value>The available skills.</value>
+		public ClassSkillCollection MysticSkills {
+			get {
+				if (_mysticSkills == null) {
+					_mysticSkills = new ClassSkillCollection();
+					_mysticSkills.AddRange(RCDCache.Skills.Where(item => item.Class == ClassType.Mystic));
+				}
+				return _mysticSkills;
+			}
+		}
+
+		#endregion
+
+		#region MageSkills
+
+		private ClassSkillCollection _mageSkills;
+
+		/// <summary>
+		/// Gets or sets the available skills.
+		/// </summary>
+		/// <value>The available skills.</value>
+		public ClassSkillCollection MageSkills {
+			get {
+				if (_mageSkills == null) {
+					_mageSkills = new ClassSkillCollection();
+					_mageSkills.AddRange(RCDCache.Skills.Where(item => item.Class == ClassType.Mage));
+				}
+				return _mageSkills;
 			}
 		}
 
@@ -363,6 +423,7 @@
 		/// <param name="configurationManager">The configuration manager.</param>
 		public RCDManagerViewModel(ConfigurationManager configurationManager) {
 			_configurationManager = configurationManager;
+			this.BindClassProfile(this.SelectedProfile);
 		}
 
 		#endregion
@@ -370,57 +431,13 @@
 		#region Methods
 
 		#region Character Profile Management
-
-		/// <summary>
-		/// Binds the skill grid.
-		/// </summary>
-		/// <param name="classProfile">The class profile.</param>
-		private void BindSkillGrid(ClassProfile classProfile) {
-			try {
-				this.AvailableSkills.Clear();
-				//var applicableSkills = RCDCache.Skills
-				//	.Where(skill => (skill.Race & _configurationManager.Race) == _configurationManager.Race)
-				//	.Where(skill =>
-				//		(skill.Class == ClassType.Mage && skill.SkillLevel <= MageModifiedLevel) ||
-				//		(skill.Class == ClassType.Warrior && skill.SkillLevel <= this.WarriorModifiedLevel) ||
-				//		(skill.Class == ClassType.Mystic && skill.SkillLevel <= MysticModifiedLevel) ||
-				//		(skill.Class == ClassType.Ranger && skill.SkillLevel <= RangerModifiedLevel)
-				//	)
-				//	.OrderBy(skill => skill.Class)
-				//	.ThenBy(skill => skill.SkillLevel)
-				//	;
-				var skills = new ClassSkillCollection();
-
-				skills.AddRange(
-					RCDCache.Skills
-					.Where(skill => (skill.Race & _configurationManager.Race) == _configurationManager.Race)
-					.Where(skill =>
-						(skill.Class == ClassType.Mage && skill.SkillLevel <= MageModifiedLevel) ||
-						(skill.Class == ClassType.Warrior && skill.SkillLevel <= this.WarriorModifiedLevel) ||
-						(skill.Class == ClassType.Mystic && skill.SkillLevel <= MysticModifiedLevel) ||
-						(skill.Class == ClassType.Ranger && skill.SkillLevel <= RangerModifiedLevel)
-					)
-					.OrderBy(skill => skill.Class)
-					.ThenBy(skill => skill.SkillLevel)
-					);
-
-				this.AvailableSkills = skills;
-			}
-			catch (Exception caught) {
-				MessageBox.Show(
-					$"Failure binding skills: {caught.Message}",
-					@"Failure Binding Skills...",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error					
-					);
-			}
-		}
 		
 		/// <summary>
 		/// Binds the class profile.
 		/// </summary>
 		/// <param name="classProfile">The class profile.</param>
 		private void BindClassProfile(ClassProfile classProfile) {
+
 			#region Set readonly and enabled properties in applicable controls
 			//this.warriorLevel.ReadOnly
 			//	= this.rangerLevel.ReadOnly
@@ -491,7 +508,6 @@
 			#endregion
 
 			this.PointsRemaining = classProfile.CalculatePointsAvailable();
-			this.BindSkillGrid(classProfile);
 		}
 		
 		#endregion
@@ -502,7 +518,7 @@
 		/// <exception cref="Exception">A profile by the name {newName}</exception>
 		private void AddProfile(object sender) {
 			try {
-				var newName = RCD.WPFClient.InputBox.ShowDialog(/*Application.Current.MainWindow, */@"Select New Profile Name...", @"Class Profile Name:", string.Empty);
+				var newName = InputBox.ShowDialog(@"Select New Profile Name...", @"Class Profile Name:", string.Empty);
 				if (string.IsNullOrWhiteSpace(newName)) return;
 
 				//Try using the new name as an XAttribute value.  
