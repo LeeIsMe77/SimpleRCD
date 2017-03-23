@@ -9,7 +9,7 @@
 	#endregion
 
 	public class ClassProfileCollection
-		: Collection<ClassProfile> {
+		: ObservableCollection<ClassProfile> {
 
 		#region Properties
 

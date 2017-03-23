@@ -142,13 +142,13 @@
 				= this.rangerLevel.ReadOnly
 				= this.mageLevel.ReadOnly
 				= this.mysticLevel.ReadOnly
-				= (classProfile == null || this.ConfigurationManager.Race == RaceType.Orc);
+				= (classProfile == null || this.ConfigurationManager.Race == RaceType.OrcHai);
 
 			this.warriorLevel.Enabled
 				= this.rangerLevel.Enabled
 				= this.mageLevel.Enabled
 				= this.mysticLevel.Enabled
-				= (classProfile != null && this.ConfigurationManager.Race != RaceType.Orc);
+				= (classProfile != null && this.ConfigurationManager.Race != RaceType.OrcHai);
 
 			this.warriorPoints.ReadOnly
 				= this.rangerPoints.ReadOnly
@@ -172,7 +172,7 @@
 				classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
 			}
 
-			var defaultModifier = this.ConfigurationManager.Race == RaceType.Orc ? 2m / 3m : 1.0m;
+			var defaultModifier = this.ConfigurationManager.Race == RaceType.OrcHai ? 2m / 3m : 1.0m;
 
 			#region Warrior Row
 			var warriorLevel = ClassProfileUtility.CalculateClassLevel(classProfile.WarriorPoints);
@@ -202,7 +202,7 @@
 			var mageLevel = ClassProfileUtility.CalculateClassLevel(classProfile.MagePoints);
 			this.mageLevel.Text = ((int)Math.Floor(mageLevel)).ToString();
 			this.magePoints.Text = classProfile.MagePoints.ToString();
-			var modifiedMageLevel = (int)Math.Floor(this.ConfigurationManager.Race == RaceType.Uruk ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
+			var modifiedMageLevel = (int)Math.Floor(this.ConfigurationManager.Race == RaceType.UrukHai ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
 			this.modifiedMage.Text = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel).ToString();
 			#endregion
 
@@ -504,8 +504,8 @@
 				this.ConfigurationManager.Race = sender == whitieRadio
 					? RaceType.Light
 					: sender == urukHaiRadio
-						? RaceType.Uruk
-						: RaceType.Orc
+						? RaceType.UrukHai
+						: RaceType.OrcHai
 						;
 
 				this.BindClassProfile(this.selectedProfile.SelectedItem as ClassProfile);

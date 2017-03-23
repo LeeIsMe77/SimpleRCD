@@ -19,17 +19,17 @@
 		/// The dark side, Uruk-Hai
 		/// </summary>
 		[Display(Name = @"Uruk-Hai")]
-		Uruk = 0x2,
+		UrukHai = 0x2,
 		/// <summary>
 		/// Orc-Hai
 		/// </summary>
 		[Display(Name = @"Orc-Hai")]
-		Orc = 0x4,
+		OrcHai = 0x4,
 		/// <summary>
 		/// Uruk-Lhuth
 		/// </summary>
 		[Display(Name = @"Uruk-Lhuth")]
-		Lhuth = 0x8,
+		UrukLhuth = 0x8,
 		/// <summary>
 		/// Uruk-Lhuth
 		/// </summary>

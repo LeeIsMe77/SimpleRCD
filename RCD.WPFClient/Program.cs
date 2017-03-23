@@ -12,9 +12,9 @@
 		[STAThread]
 		public static void RunWPFClient() {
 			var application = new Application();
-			var rcdManager = new RCDManager();
 			var rcdManagerViewModel = new RCDManagerViewModel(new Core.Common.ConfigurationManager());
-			rcdManager.DataContext = rcdManagerViewModel;
+			var rcdManager = new RCDManager(rcdManagerViewModel);
+			//rcdManager.DataContext = rcdManagerViewModel;
 			application.Run(rcdManager);
 		}
 

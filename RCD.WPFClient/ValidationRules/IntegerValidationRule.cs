@@ -10,7 +10,7 @@
 		public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
 			if (value != null) {
 				int parseInt;
-				if (int.TryParse(value.ToString(), NumberStyles.Integer, CultureInfo.CurrentCulture, out parseInt)) {
+				if (int.TryParse(value.ToString(), NumberStyles.Integer, CultureInfo.CurrentCulture, out parseInt) && parseInt >= 0) {
 					return new ValidationResult(true, null);
 				}
 			}

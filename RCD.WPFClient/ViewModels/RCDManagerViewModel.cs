@@ -3,6 +3,7 @@
 	#region Directives
 	using System;
 	using System.Collections.Generic;
+	using System.ComponentModel;
 	using System.Linq;
 	using System.Windows;
 	using System.Windows.Input;
@@ -363,6 +364,33 @@
 
 		#endregion
 
+		#region DeleteClassCommand
+
+		private ICommand _deleteClassCommand;
+
+		/// <summary>
+		/// Gets the delete class command.
+		/// </summary>
+		/// <value>The delete class command.</value>
+		public ICommand DeleteClassCommand => _deleteClassCommand
+			?? (_deleteClassCommand = new RelayCommand(this.DeleteProfile));
+
+		#endregion
+
+		#region SaveConfigurationCommand
+
+		private ICommand _saveConfigurationCommand;
+
+		/// <summary>
+		/// Gets the save configuration command.
+		/// </summary>
+		/// <value>The save configuration command.</value>
+		public ICommand SaveConfigurationCommand => _saveConfigurationCommand
+			?? (_saveConfigurationCommand = new RelayCommand(this.SaveConfiguration));
+
+		#endregion
+
+		//SaveConfigurationCommand
 		#endregion
 
 		#region Skill Lists
@@ -379,7 +407,7 @@
 			get {
 				if (_warriorSkills == null) {
 					_warriorSkills = new ClassSkillCollection();
-					_warriorSkills.AddRange(RCDCache.Skills.Where(item => item.Class == ClassType.Warrior));
+					_warriorSkills.AddRange(RCDCache.Skills.OfType<WarriorSkill>());
 				}
 				return _warriorSkills;
 			}
@@ -399,7 +427,7 @@
 			get {
 				if (_rangerSkills == null) {
 					_rangerSkills = new ClassSkillCollection();
-					_rangerSkills.AddRange(RCDCache.Skills.Where(item => item.Class == ClassType.Ranger));
+					_rangerSkills.AddRange(RCDCache.Skills.OfType<RangerSkill>());
 				}
 				return _rangerSkills;
 			}
@@ -419,7 +447,7 @@
 			get {
 				if (_mysticSkills == null) {
 					_mysticSkills = new ClassSkillCollection();
-					_mysticSkills.AddRange(RCDCache.Skills.Where(item => item.Class == ClassType.Mystic));
+					_mysticSkills.AddRange(RCDCache.Skills.OfType<MysticPower>());
 				}
 				return _mysticSkills;
 			}
@@ -439,7 +467,7 @@
 			get {
 				if (_mageSkills == null) {
 					_mageSkills = new ClassSkillCollection();
-					_mageSkills.AddRange(RCDCache.Skills.Where(item => item.Class == ClassType.Mage));
+					_mageSkills.AddRange(RCDCache.Skills.OfType<MageSpell>());
 				}
 				return _mageSkills;
 			}
@@ -468,8 +496,12 @@
 
 		#region Character Profile Management
 
+		/// <summary>
+		/// Sets the class points for the current levels.
+		/// </summary>
 		private void SetPoints() {
-			var defaultModifier = _configurationManager.Race == RaceType.Orc ? 2m / 3m : 1.0m;
+
+			var defaultModifier = _configurationManager.Race == RaceType.OrcHai ? 2m / 3m : 1.0m;
 
 			#region Warrior Row
 			this.SelectedProfile.WarriorPoints = ClassProfileUtility.CalculateClassPoints(this.WarriorLevel);
@@ -503,55 +535,21 @@
 			this.OnPropertyChanged(nameof(this.MagePoints));
 
 			var rawMageLevel = ClassProfileUtility.CalculateClassLevel(this.MagePoints);
-			var modifiedMageLevel = (int)Math.Floor(_configurationManager.Race == RaceType.Uruk ? (decimal)rawMageLevel - 3 : (decimal)rawMageLevel * defaultModifier);
+			var modifiedMageLevel = (int)Math.Floor(_configurationManager.Race == RaceType.UrukHai ? (decimal)rawMageLevel - 3 : (decimal)rawMageLevel * defaultModifier);
 			this.MageModifiedLevel = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel);
 			#endregion
 
 			this.PointsRemaining = this.SelectedProfile.CalculatePointsAvailable();
+
 		}
 		
 		/// <summary>
-		/// Binds the class profile.
+		/// Sets the class levels for the current points.
 		/// </summary>
 		/// <param name="classProfile">The class profile.</param>
 		private void BindLevel() {
-
-			#region Set readonly and enabled properties in applicable controls
-			//this.warriorLevel.ReadOnly
-			//	= this.rangerLevel.ReadOnly
-			//	= this.mageLevel.ReadOnly
-			//	= this.mysticLevel.ReadOnly
-			//	= (classProfile == null || _configurationManager.Race == RaceType.Orc);
-
-			//this.warriorLevel.Enabled
-			//	= this.rangerLevel.Enabled
-			//	= this.mageLevel.Enabled
-			//	= this.mysticLevel.Enabled
-			//	= (classProfile != null && _configurationManager.Race != RaceType.Orc);
-
-			//this.warriorPoints.ReadOnly
-			//	= this.rangerPoints.ReadOnly
-			//	= this.magePoints.ReadOnly
-			//	= this.mysticPoints.ReadOnly
-			//	= classProfile == null;
-
-			//this.warriorPoints.Enabled
-			//	= this.rangerPoints.Enabled
-			//	= this.magePoints.Enabled
-			//	= this.mysticPoints.Enabled
-			//	= classProfile != null;
-
-			//this.clear.Enabled
-			//	= this.delete.Enabled
-			//	= classProfile != null;
-			#endregion
-
-			//if (classProfile == null) {
-			//	//If no profile has been passed, set a default Empty profile.
-			//	classProfile = new ClassProfile("Empty", 0, 0, 0, 0);
-			//}
-
-			var defaultModifier = _configurationManager.Race == RaceType.Orc ? 2m / 3m : 1.0m;
+			
+			var defaultModifier = _configurationManager.Race == RaceType.OrcHai ? 2m / 3m : 1.0m;
 
 			#region Warrior Row
 			var warriorLevel = ClassProfileUtility.CalculateClassLevel(this.WarriorPoints);
@@ -585,7 +583,7 @@
 			_mageLevel = ((int)Math.Floor(mageLevel));
 			this.OnPropertyChanged(nameof(this.MageLevel));
 
-			var modifiedMageLevel = (int)Math.Floor(_configurationManager.Race == RaceType.Uruk ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
+			var modifiedMageLevel = (int)Math.Floor(_configurationManager.Race == RaceType.UrukHai ? (decimal)mageLevel - 3 : (decimal)mageLevel * defaultModifier);
 			this.MageModifiedLevel = (modifiedMageLevel < 0 ? 0 : modifiedMageLevel);
 			#endregion
 
@@ -621,6 +619,61 @@
 					MessageBoxImage.Error
 					);
 			}
+		}
+
+		/// <summary>
+		/// Deletes the profile.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		private void DeleteProfile(object sender) {
+			try {
+				if (this.SelectedProfile != null && this.ClassProfiles.Contains(this.SelectedProfile)) {
+					var indexOfProfile = this.ClassProfiles.IndexOf(this.SelectedProfile);
+					this.ClassProfiles.Remove(this.SelectedProfile);
+					this.OnPropertyChanged(nameof(this.ClassProfiles));
+
+					if (this.ClassProfiles.Count == 0) return;
+					if (indexOfProfile + 1 > this.ClassProfiles.Count) {
+						this.SelectedProfile = this.ClassProfiles.Last();
+						return;
+					}
+					this.SelectedProfile = this.ClassProfiles[indexOfProfile];
+				}
+
+			}
+			catch (Exception caught) {
+				MessageBox.Show(
+					$"Failure deleting class profile: {caught.Message}",
+					@"Failure Deleting Class Profile...",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+					);
+			}
+		}
+
+		/// <summary>
+		/// Saves the configuration.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		private void SaveConfiguration(object sender) {
+			try {
+				_configurationManager.SaveConfiguration();
+			}
+			catch { }
+		}
+
+		#endregion
+
+		#region Control Events
+
+		/// <summary>
+		/// Handles the Closing event of the window control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
+		/// <exception cref="NotImplementedException"></exception>
+		internal void window_Closing(object sender, CancelEventArgs e) {
+			this.SaveConfiguration(sender);
 		}
 
 		#endregion

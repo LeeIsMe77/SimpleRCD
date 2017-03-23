@@ -2,11 +2,15 @@
 
 	#region Directives
 	using System;
+	using System.Globalization;
 	using System.Windows;
 	using System.Windows.Data;
 	#endregion
 
-	public sealed class EnumBooleanConverter
+	/// <summary>
+	/// Class PointsAvailableCutoffConverter. This class cannot be inherited.
+	/// </summary>
+	public sealed class CutoffConverter
 		: IValueConverter {
 
 		#region IValueConverter Members
@@ -19,18 +23,22 @@
 		/// <param name="parameter">The converter parameter to use.</param>
 		/// <param name="culture">The culture to use in the converter.</param>
 		/// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
-		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
 
-			var parameterString = parameter as string;
-			if (string.IsNullOrWhiteSpace(parameterString)) { 
+			if (value == null || parameter == null) {
 				return DependencyProperty.UnsetValue;
 			}
 
-			if (!Enum.IsDefined(value.GetType(), value)) {
+			int pointsAvailable;
+			if (!int.TryParse(value.ToString(), NumberStyles.Integer, CultureInfo.CurrentCulture, out pointsAvailable)) {
 				return DependencyProperty.UnsetValue;
 			}
 
-			return Enum.Parse(value.GetType(), parameterString, true).Equals(value);
+			int cutoffValue;
+			if (!int.TryParse(parameter.ToString(), NumberStyles.Integer, CultureInfo.CurrentCulture, out cutoffValue)) {
+				return DependencyProperty.UnsetValue;
+			}
+			return pointsAvailable >= cutoffValue;
 		}
 
 		/// <summary>
@@ -42,13 +50,9 @@
 		/// <param name="culture">The culture to use in the converter.</param>
 		/// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
-			var parameterString = parameter as string;
-			if (string.IsNullOrWhiteSpace(parameterString)) {
-				return DependencyProperty.UnsetValue;
-			}
-			return Enum.Parse(targetType, parameterString, true);
+			throw new NotImplementedException();
 		}
-		
+
 		#endregion
 
 	}
